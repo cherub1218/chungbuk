@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="businessAnnouncementMapper">
+      <!-- 게시판 글 작성 -->
+   <insert id="insert" useGeneratedKeys="false">
+	   INSERT INTO EMP_BAM_ANC( BAM_ANC_IDX 
+	   					      , BOARD_IDX 
+	   					      , ANC_TITLE 
+	   					      , ANC_REMARK
+	   					      , ANC_BEGIN_DT
+	   					      , ANC_END_DT
+	   					      , WRITER
+	   					       )
+	                 VALUES(   SEQ_BAM_ANC_IDX.NEXTVAL
+	                 		  , 1 
+	                 		  , #{anc_title}
+	                 		  , #{anc_remark}
+	                 		  , #{anc_begin_dt}
+	                 		  , #{anc_end_dt}
+	                 		  , #{writer}
+	                 		    )
+	            <selectKey keyProperty="bam_anc_idx" resultType="int" order="AFTER">
+
+        			SELECT SEQ_BAM_ANC_IDX.currval FROM dual
+
+     			 </selectKey>
+   
+   </insert>
+   
+   
+<select id="businessAnnouncementList" resultType="emp.bam.vo.BusinessAnnouncementVO" parameterType="emp.bam.util.SearchCriteria">
+		SELECT  BAM_ANC_IDX 
+	   					      , BOARD_IDX 
+	   					      , ANC_TITLE 
+	   					      , ANC_REMARK
+	   					      , ANC_BEGIN_DT
+	   					      , ANC_END_DT
+	   					      , WRITER
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      , BPLAN_FORM_CHK
+	   					      , EVAL_FORM_CHK
+		 FROM ( 
+		        SELECT BAM_ANC_IDX 
+	   					      , BOARD_IDX 
+	   					      , ANC_TITLE 
+	   					      , ANC_REMARK
+	   					      , ANC_BEGIN_DT
+	   					      , ANC_END_DT
+	   					      , WRITER
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      , BPLAN_FORM_CHK
+	   					      , EVAL_FORM_CHK
+		               ,ROW_NUMBER() OVER(ORDER BY BAM_ANC_IDX DESC) AS RNUM
+		         FROM EMP_BAM_ANC
+		         WHERE 1=1 
+		         AND DEL_YN = 'N'
+		         	<include refid="search"></include>
+		                       ) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY BAM_ANC_IDX DESC
+	</select>
+		<select id="read" parameterType="int" resultType="emp.bam.vo.BusinessAnnouncementVO">
+		SELECT	BAM_ANC_IDX 
+	   					      , BOARD_IDX 
+	   					      , ANC_TITLE 
+	   					      , ANC_REMARK
+	   					      , ANC_BEGIN_DT
+	   					      , ANC_END_DT
+	   					      , WRITER
+	   					      , REG_DATE
+	   					      , MOD_DATE
+		 FROM EMP_BAM_ANC
+		 WHERE BAM_ANC_IDX = #{bam_anc_idx}
+	</select>
+	
+	     <update id="update" parameterType="emp.bam.vo.BusinessAnnouncementVO">
+		UPDATE EMP_BAM_ANC
+		   SET    ANC_TITLE = #{anc_title}
+	   			, ANC_REMARK = #{anc_remark}
+	   	        , ANC_BEGIN_DT = #{anc_begin_dt}
+		        , ANC_END_DT = #{anc_end_dt}
+	   		    , WRITER = #{writer}
+		 WHERE BAM_ANC_IDX = #{bam_anc_idx} 
+	</update>
+	
+	
+	 <delete id="delete" parameterType="int">
+		UPDATE EMP_BAM_ANC
+		   SET    DEL_YN = 'Y'
+		 WHERE BAM_ANC_IDX = #{bam_anc_idx}
+	</delete> 
+	
+	<select id="listCount" parameterType="emp.bam.util.SearchCriteria" resultType="int">
+		SELECT COUNT(BAM_ANC_IDX)
+		   FROM EMP_BAM_ANC
+		   WHERE 1=1
+		   AND DEL_YN = 'N'
+		<include refid="search"></include>	
+		   AND BAM_ANC_IDX > 0
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'anc_title'.toString()">AND ANC_TITLE LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'anc_remark'.toString()">AND ANC_REMARK LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'writer'.toString()">AND WRITER LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'title_remark'.toString()">AND (ANC_TITLE LIKE '%' || #{keyword} || '%') or (ANC_REMARK LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	
+
+	     <insert id="insertFile" parameterType="hashMap">
+		INSERT INTO EMP_FILE(
+			FILE_IDX,
+			BOARD_IDX,
+			BOARD_LIST_IDX,
+			FILE_FNAME,
+			FILE_SNAME,
+			FILE_SIZE
+		)VALUES(
+			SEQ_FILE_IDX.NEXTVAL,
+			1,
+			#{bam_anc_idx},
+			#{file_fname},
+			#{file_sname},
+			#{file_size}
+		)
+  	   </insert>
+
+
+ <select id="selectFileList" parameterType="int" resultType="hashMap">
+SELECT      FILE_IDX,
+			FILE_FNAME,
+			ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+		
+		FROM EMP_FILE
+		WHERE BOARD_LIST_IDX = #{bam_anc_idx}
+		AND BOARD_IDX = 1
+		AND DEL_YN = 'N'
+		ORDER BY FILE_IDX ASC
+</select>
+
+	<select id="selectFileInfo" parameterType="hashMap" resultType="hashMap">
+		SELECT
+		FILE_SNAME,
+		FILE_FNAME
+		FROM EMP_FILE
+		WHERE FILE_IDX = #{FILE_IDX}
+	</select>
+
+     <update id="updateFile" parameterType="hashMap">
+	    	UPDATE EMP_FILE SET
+	    	DEL_YN = 'Y'
+	    	WHERE FILE_IDX = #{FILE_IDX}
+    </update>
+    
+    																
+      <insert id="businessEvaluationEdit" parameterType="hashMap" >
+	   INSERT INTO EMP_BEM_BEVAL_FORM( BAM_ANC_IDX
+	   						  , BEM_BEVAL_FORM_IDX
+	   					      , BOARD_IDX 
+	   					      , EVAL_FORM_TITLE 
+	   					      , EVAL_FORM_ITEM
+	   					      , EVAL_FORM_SCORE 
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      
+	   					       )
+	                 VALUES(   #{bam_anc_idx}
+	                 		  , SEQ_BEVAL_FORM_IDX.NEXTVAL
+	                 		  , 1 
+	                 		  , #{eval_form_title}
+	                 		  , #{eval_form_item}
+	                 		  , #{eval_form_score}
+	                 		  , SYSDATE
+	                 		  , SYSDATE
+	                 		    )
+	              
+   
+   </insert>
+   
+   <update id="businessEvaluationEditChk">
+   		UPDATE EMP_BAM_ANC SET
+   			EVAL_FORM_CHK = 'Y'
+   			WHERE BAM_ANC_IDX = #{bam_anc_idx}
+  			     
+   </update>
+   
+         <insert id="businessPlanApplyEdit" parameterType="hashMap" >
+	   INSERT INTO EMP_BPM_BPLAN_FORM( BAM_ANC_IDX
+	   						  , BPM_BPLAN_FORM_IDX
+	   					      , BOARD_IDX 
+	   					      , BPLAN_FORM_TITLE1 
+	   					      , BPLAN_FORM_TITLE2 
+	   					      , BPLAN_FORM_TITLE3 
+	   					      , BPLAN_FORM_TITLE4 
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      
+	   					       )
+	                 VALUES(   #{bam_anc_idx}
+	                 		  , SEQ_BEVAL_FORM_IDX.NEXTVAL
+	                 		  , 1 
+	                 		  , #{bplan_form_title1}
+	                 		  , #{bplan_form_title2}
+	                 		  , #{bplan_form_title3}
+	                 		  , #{bplan_form_title4}
+	                 		  , SYSDATE
+	                 		  , SYSDATE
+	                 		    )
+	              
+   
+   </insert>
+   
+    <update id="businessPlanApplyEditChk">
+   		UPDATE EMP_BAM_ANC SET
+   			BPLAN_FORM_CHK = 'Y'
+   			WHERE BAM_ANC_IDX = #{bam_anc_idx}
+   </update>
+   
+   <insert id="businessAnnouncementMember" parameterType="hashMap" >
+	   INSERT INTO EMP_BAM_ANC_MEMBER( BAM_ANC_IDX 
+	   						  , BAM_ANC_MEMBER_IDX
+	   					      , ANC_MEMBER_ID 
+	   					      , ANC_MEMBER_NAME
+	   					       )
+	                 VALUES(   #{bam_anc_idx}
+	                 		  , SEQ_BAM_ANC_MEMBER_IDX.NEXTVAL
+	                 		  , #{anc_member_id}
+	                 		  , #{anc_member_name}
+	                 		    )
+	              
+   
+   </insert>
+   
+   <update id="businessAnnouncementOldUpdate" useGeneratedKeys="true" keyProperty="id">
+   
+   UPDATE EMP_BAM_ANC SET
+   					DEL_YN ='Y'
+   					
+   				WHERE
+   				<![CDATA[
+   				 ANC_END_DT < SYSDATE
+   				 ]]>
+   </update>
+   
+   <update id="businessEvaluationEditUpdate" parameterType="hashMap">
+   UPDATE EMP_BEM_BEVAL_FORM SET
+   					EVAL_FORM_TITLE = #{eval_form_title}
+   				  , EVAL_FORM_ITEM = #{eval_form_item}
+   				  , EVAL_FORM_SCORE = #{eval_form_score}
+   					
+   				WHERE BAM_ANC_IDX = #{bam_anc_idx}
+   				AND DEL_YN = 'N'
+   				AND BEM_BEVAL_FORM_IDX = #{bem_beval_form_idx}
+   				
+   </update>
+   
+   <update id="businessPlanApplyEditUpdate" parameterType="hashMap">
+   UPDATE EMP_BPM_BPLAN_FORM SET
+   					BPLAN_FORM_TITLE1 = #{bplan_form_title1}
+   					,BPLAN_FORM_TITLE2 = #{bplan_form_title2}
+   					,BPLAN_FORM_TITLE3 = #{bplan_form_title3}
+   					,BPLAN_FORM_TITLE4 = #{bplan_form_title4}
+   					
+   				WHERE BAM_ANC_IDX = #{bam_anc_idx}
+   				AND DEL_YN = 'N'
+   				AND BPM_BPLAN_FORM_IDX = #{bpm_bplan_form_idx}
+   </update>
+
+</mapper>
+

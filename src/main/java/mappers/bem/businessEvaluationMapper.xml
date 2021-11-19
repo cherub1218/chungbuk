@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="businessEvaluationMapper">
+   
+      <!-- 게시판 글 작성 -->
+   <insert id="insert" parameterType="emp.bem.vo.BusinessEvaluationVO">
+	   INSERT INTO EMP_BEM_BEVAL( 
+	   							BEM_BEVAL_IDX 
+	   					      , BOARD_IDX 
+	   					      , EVAL_OPINION
+	   					      , EVAL_SCORE1
+	   					      , EVAL_SCORE2
+	   					      , EVAL_SCORE3
+	   					      , EVAL_SCORE4
+	   					      , EVAL_SCORE5
+	   					      , EVAL_SCORE6
+	   					      , EVAL_SCORE7
+	   					      , EVAL_SCORE8
+	   					      , EVAL_TOTALSCORE	
+	   					      , EVAL_WRITER
+	   					      , WRITER_ID
+	   					      , REG_DATE
+	   					      , BPM_BPLAN_IDX
+	   					   
+	   					       )
+	                 VALUES(   SEQ_BEM_BEVAL_IDX.NEXTVAL
+	                 		  , 3 
+	                 		  , #{eval_opinion}
+	                 		  , #{eval_score1}
+	                 		  , #{eval_score2}
+	                 		  , #{eval_score3}
+	                 		  , #{eval_score4}
+	                 		  , #{eval_score5}
+	                 		  , #{eval_score6}
+	                 		  , #{eval_score7}
+	                 		  , #{eval_score8}
+	                 		  , #{eval_totalscore}
+	                 		  , #{eval_writer}
+	                 		  , #{writer_id}
+	                 		  , SYSDATE
+	                 		  , #{bpm_bplan_idx}
+	                 		    )
+   
+   </insert>
+   
+   
+<select id="businessEvaluationList" resultType="emp.bem.vo.BusinessEvaluationVO" parameterType="hashMap">
+		SELECT 		      BEM_BEVAL_IDX 
+	   					      , BOARD_IDX 
+	   					      , EVAL_OPINION
+	   					      , EVAL_SCORE1
+	   					      , EVAL_SCORE2
+	   					      , EVAL_SCORE3
+	   					      , EVAL_SCORE4
+	   					      , EVAL_SCORE5
+	   					      , EVAL_SCORE6
+	   					      , EVAL_SCORE7
+	   					      , EVAL_SCORE8
+	   					      , EVAL_TOTALSCORE	
+	   					      , EVAL_WRITER
+	   					      , WRITER_ID
+	   					      , BPM_BPLAN_IDX
+	   					      , REG_DATE
+	   					      , MOD_DATE
+		 FROM EMP_BEM_BEVAL
+		 WHERE 1=1 
+		 AND BPM_BPLAN_IDX = #{bpm_bplan_idx}
+		 AND DEL_YN = 'N'
+	     ORDER BY BEM_BEVAL_IDX DESC
+	</select>
+		<select id="businessEvaluationDetail" parameterType="int" resultType="emp.bem.vo.BusinessEvaluationVO">
+		SELECT	BEM_BEVAL_IDX 
+	   					      , EVAL_OPINION
+	   					      , EVAL_SCORE1
+	   					      , EVAL_SCORE2
+	   					      , EVAL_SCORE3
+	   					      , EVAL_SCORE4
+	   					      , EVAL_SCORE5
+	   					      , EVAL_SCORE6
+	   					      , EVAL_SCORE7
+	   					      , EVAL_SCORE8
+	   					      , WRITER_ID
+	   					      , EVAL_TOTALSCORE
+	   					      , TO_CHAR(REG_DATE,'YYYY.MM.DD')
+	   					      , EVAL_WRITER
+		 FROM EMP_BEM_BEVAL
+		 WHERE 1=1
+		 AND BEM_BEVAL_IDX = #{bem_beval.idx}
+		 AND DEL_YN ='N'
+	</select> 
+	
+ <update id="businessEvaluationUpdate" parameterType="emp.bem.vo.BusinessEvaluationVO">
+		UPDATE EMP_BEM_BEVAL
+		   SET EVAL_SCORE1   =   #{eval_score1},
+			   EVAL_SCORE2   =   #{eval_score2},
+			   EVAL_SCORE3   =   #{eval_score3},
+			   EVAL_SCORE4   =   #{eval_score4},
+			   EVAL_SCORE5   =   #{eval_score5},
+			   EVAL_SCORE6   =   #{eval_score6},
+			   EVAL_SCORE7   =   #{eval_score7},
+			   EVAL_SCORE8   =   #{eval_score8},
+			   EVAL_TOTALSCORE = #{eval_totalscore},
+		   	   EVAL_OPINION  =   #{eval_opinion}
+		 WHERE BEM_BEVAL_IDX = #{bem_beval_idx} 
+	</update> 
+	
+	<!-- <delete id="delete" parameterType="int">
+		DELETE 
+		  FROM MP_BOARD
+		 WHERE BNO = #{bno}
+	</delete> -->
+	
+	<select id="listCount" parameterType="emp.bem.util.SearchCriteria" resultType="int">
+		SELECT COUNT(BPM_BPLAN_IDX)
+		   FROM EMP_BPM_BPLAN
+		   WHERE 1=1
+		   AND DEL_YN = 'N'
+		<include refid="search"></include>	
+		   AND BPM_BPLAN_IDX > 0
+	</select>
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND EVAL_WRITER LIKE '%' || #{keyword} || '%'</if>
+		</if>
+	</sql>
+	
+
+	   <insert id="insertFile" parameterType="hashMap">
+		INSERT INTO EMP_FILE(
+			FILE_IDX,
+			BOARD_IDX,
+			BOARD_LIST_IDX,
+			FILE_FNAME,
+			FILE_SNAME,
+			FILE_SIZE
+		)VALUES(
+			SEQ_FILE_IDX.NEXTVAL,
+			2,
+			#{bem_bplan_idx},
+			#{file_fname},
+			#{file_sname},
+			#{file_size}
+		)
+    </insert> 
+
+
+	 <select id="selectFileList" parameterType="int" resultType="hashMap">
+	SELECT  FILE_IDX,
+			FILE_FNAME,
+			ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+		
+		FROM EMP_FILE
+		WHERE BOARD_LIST_IDX = #{bem_bplan_idx}
+		AND DEL_YN = 'N'
+		ORDER BY FILE_IDX ASC
+</select>
+
+
+	<select id="selectFileInfo" parameterType="hashMap"
+		resultType="hashMap">
+		SELECT
+		FILE_SNAME,
+		FILE_FNAME
+		FROM EMP_FILE
+		WHERE FILE_IDX = #{FILE_IDX}
+	</select>
+
+<!-- 	<update id="updateFile" parameterType="hashMap">
+		UPDATE EMP_FILE SET
+		DEL_GB = 'Y'
+		WHERE FILE_NO = #{file_idx}
+	</update>  -->
+ 
+    <resultMap type="emp.bpm.vo.BusinessPlanVO" id="BusinessPlanVO">
+    	<result column="BAM_ANC_IDX" property="bam_anc_idx"/>
+    </resultMap>
+    
+    <resultMap type="emp.bem.vo.BusinessEvaluationVO" id="BusinessEvaluationVO">
+    	<result column="BEM_BEVAL_IDX" property="bem_beval_idx"/>
+    	<result column="BPM_BPLAN_IDX" property="bpm_bplan_idx"/>
+    	<result column="EVAL_SCORE1" property="eval_score1"/>   
+    	<result column="EVAL_SCORE2" property="eval_score2"/>   
+    	<result column="EVAL_SCORE3" property="eval_score3"/>   
+    	<result column="EVAL_SCORE4" property="eval_score4"/>   
+    	<result column="EVAL_SCORE5" property="eval_score5"/>   
+    	<result column="EVAL_SCORE6" property="eval_score6"/>   
+    	<result column="EVAL_SCORE7" property="eval_score7"/>   
+    	<result column="EVAL_SCORE8" property="eval_score8"/> 
+    	<result column="EVAL_TOTALSCORE" property="eval_totalscore"/>   
+    	<result column="EVAL_WRITER" property="eval_writer"/>   
+    	<result column="WRITER_ID" property="writer_id"/>   
+    	<result column="REG_DATE" property="reg_date"/>
+    	<result column="MOD_DATE" property="mod_date"/>
+    	<collection property="businessPlanVO" resultMap="BusinessPlanVO"/>
+    </resultMap> 
+ 
+   <select id="businessEvaluationMyList" resultMap="BusinessEvaluationVO" parameterType="hashMap">
+		
+		SELECT b.BAM_ANC_IDX
+     		 , a.BEM_BEVAL_IDX
+    		 , a.BPM_BPLAN_IDX
+			 , a.EVAL_SCORE1 
+			 , a.EVAL_SCORE2 
+			 , a.EVAL_SCORE3
+    		 , a.EVAL_SCORE4
+			 , a.EVAL_SCORE5
+    		 , a.EVAL_SCORE6
+			 , a.EVAL_SCORE7
+    		 , a.EVAL_SCORE8
+			 , a.EVAL_TOTALSCORE	
+			 , a.EVAL_WRITER
+			 , a.WRITER_ID
+			 , a.REG_DATE
+			 , a.MOD_DATE
+		  FROM EMP_BEM_BEVAL a, EMP_BPM_BPLAN b
+		 WHERE a.BPM_BPLAN_IDX = b.BPM_BPLAN_IDX
+		   AND a.WRITER_ID = #{user_id}
+		   AND a.DEL_YN = 'N'
+	  ORDER BY BEM_BEVAL_IDX DESC
+	</select>
+
+    <select id="businessEvaluationFormList" parameterType="int" resultType="hashMap">
+		SELECT BEM_BEVAL_FORM_IDX
+							  , BAM_ANC_IDX
+							  , EVAL_FORM_TITLE
+							  , EVAL_FORM_ITEM
+							  , EVAL_FORM_SCORE
+							  FROM EMP_BEM_BEVAL_FORM
+							  WHERE 1=1
+							  AND DEL_YN = 'N'
+							  AND BAM_ANC_IDX = #{bam_anc_idx}
+							  ORDER BY BEM_BEVAL_FORM_IDX ASC	
+	</select>
+	
+	<select id="businessEvaluationOverLapChk" resultType="int" parameterType="hashMap">
+		SELECT 		     COUNT(*)
+		 FROM EMP_BEM_BEVAL
+		 WHERE 1=1 
+		 AND BPM_BPLAN_IDX = #{bpm_bplan_idx}
+		 AND DEL_YN = 'N'
+		 AND WRITER_ID = #{writer_id}
+	     ORDER BY BEM_BEVAL_IDX DESC
+	</select>
+	
+</mapper>
+	

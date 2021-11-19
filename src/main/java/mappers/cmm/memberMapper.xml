@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	<!-- 회원가입 -->
+	<insert id="register" parameterType="emp.cmm.vo.MemberVO" >
+	    INSERT INTO EMP_MEMBER(   MEMBER_IDX 
+	   					       , USER_ID 
+	   					       , USER_PWD
+	   					       , USER_NAME
+	   					       , USER_BNAME
+	   					       , USER_CRCODE
+	   					       , HP_NUM
+	   					       , USER_EMAIL
+	   					       , USER_AUTH
+	   					       , REG_DATE
+	   					       , MOD_DATE 	)
+	   					       
+	                  VALUES(    
+	                  			SEQ_MEMBER_IDX.NEXTVAL
+	                  		   , #{user_id}
+	                 		   , #{user_pwd}
+	                 		   , #{user_name}
+	                 		   , #{user_bname}
+	                 		   , #{user_crcode}
+	                 		   , #{hp_num}
+	                 		   , #{user_email}
+	                 		   , #{user_auth}
+	                 		   , SYSDATE
+	                 		   , SYSDATE
+	                 		   
+	                 		   )
+   
+    </insert>
+    
+    <!-- 로그인 -->
+	<select id="login" resultType="emp.cmm.vo.MemberVO" >
+		SELECT  			   	 MEMBER_IDX	 
+	   					       , USER_ID 
+	   					       , USER_PWD
+	   					       , USER_NAME
+	   					       , HP_NUM
+	   					       , USER_EMAIL
+	   					       , USER_AUTH
+	   					       , REG_DATE
+	   					       , MOD_DATE
+		  FROM EMP_MEMBER
+		 WHERE USER_ID = #{user_id}
+		 AND DEL_YN = 'N'
+	</select>
+	
+	<!-- 회원 리스트 조회 -->
+	<select id="memberList" resultType="emp.cmm.vo.MemberVO" >
+		SELECT  				MEMBER_IDX 
+	   					       , USER_ID 
+	   					       , USER_PWD
+	   					       , USER_NAME
+	   					       , USER_BNAME
+	   					       , HP_NUM
+	   					       , USER_EMAIL
+	   					       , USER_AUTH
+	   					       , DEL_YN
+	   					       , REG_DATE
+	   					       , MOD_DATE
+		  FROM EMP_MEMBER
+		  WHERE USER_AUTH = 1
+	</select>
+	
+	<!-- 선정된 평가위원 리스트 조회 -->
+	<select id="evalList" resultType="emp.cmm.vo.EvalMemberVO" parameterType="int">
+		SELECT  				 
+	   					      BAM_ANC_IDX
+	   					    , BAM_ANC_MEMBER_IDX
+	   					    , ANC_MEMBER_ID
+	   					    , ANC_MEMBER_NAME
+	   					    , AUTH
+		  FROM EMP_BAM_ANC_MEMBER
+		  WHERE BAM_ANC_IDX = #{bam_anc_idx}
+	</select>
+	
+	<!-- 회원관리 리스트 조회 -->
+	<select id="memberMngList" resultType="emp.cmm.vo.MemberVO" >
+		SELECT  				 
+	   					       MEMBER_IDX
+	   					       , USER_ID
+	   					       , USER_NAME
+	   					       , HP_NUM
+	   					       , USER_EMAIL
+	   					       , USER_AUTH
+	   					       , USER_CRCODE
+	   					       , USER_BNAME
+	   					       , DEL_YN
+	   					       , REG_DATE
+	   					       , MOD_DATE
+		  FROM EMP_MEMBER
+		  ORDER BY USER_AUTH DESC
+	</select>
+	
+	<!-- 회원관리 상세조회 -->
+	<select id="memberMngDetail" resultType="emp.cmm.vo.MemberVO" >
+		SELECT  				 
+	   					       MEMBER_IDX
+	   					       , USER_ID
+	   					       , USER_NAME
+	   					       , USER_BNAME
+	   					       , HP_NUM
+	   					       , USER_EMAIL
+	   					       , USER_AUTH
+	   					       , USER_CRCODE
+	   					       , DEL_YN
+	   					       , REG_DATE
+	   					       , MOD_DATE
+		  FROM EMP_MEMBER
+		  WHERE MEMBER_IDX = #{member_idx}
+	</select>
+	
+	<!-- 회원정보 수정 -->
+	<update id="memberUpdate">
+		UPDATE EMP_MEMBER
+				<set>
+								USER_ID = #{user_id},
+								<if test="user_pwd != ''">
+								USER_PWD = #{user_pwd},
+								</if>
+								USER_NAME = #{user_name},
+								USER_EMAIL = #{user_email},
+								HP_NUM = #{hp_num},
+								<if test="user_crcode != null">
+								USER_CRCODE = #{user_crcode},
+								</if>
+								<if test="user_bname != null">
+								USER_BNAME = #{user_bname}
+								</if>
+				</set>
+		WHERE MEMBER_IDX = #{member_idx}
+	</update>
+	
+	<!-- 회원탈퇴 -->
+	<delete id="memberDelete">
+		DELETE FROM EMP_MEMBER
+		WHERE USER_ID = #{user_id}
+		AND USER_PWD = #{user_pwd}
+	</delete>
+	
+	<!-- 패스워드 체크 -->
+	<select id="passChk" resultType="int">
+		SELECT COUNT(*) FROM EMP_MEMBER
+		WHERE USER_ID = #{userId}
+		  AND USER_PWD = #{user_pwd}
+	</select>
+	
+		<!-- 아이디 중복 체크 -->
+	<select id="idChk" resultType="int">
+		SELECT COUNT(*) FROM EMP_MEMBER
+		WHERE USER_ID = #{user_id}
+	</select>
+	
+	<!-- 사업자등록번호 중복 체크 -->
+	<select id="crcodeChk" resultType="int">
+		SELECT COUNT(*) FROM EMP_MEMBER
+		WHERE USER_CRCODE = #{user_crcode}
+	</select>
+</mapper>

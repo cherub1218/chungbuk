@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="businessPlanMapper">
+   
+      <!-- 게시판 글 작성 -->
+   <insert id="insert" parameterType="emp.bpm.vo.BusinessPlanVO" useGeneratedKeys="true" keyProperty="bpm_bplan_idx">
+	    <selectKey keyProperty="bpm_bplan_idx" resultType="int" order="BEFORE">
+	    	SELECT SEQ_BPM_BPLAN_IDX.NEXTVAL FROM DUAL
+	    </selectKey>
+	   INSERT INTO EMP_BPM_BPLAN( BPM_BPLAN_IDX 
+	   					      , BOARD_IDX 
+	   					      , TITLE_REMARK1
+	   					      , TITLE_REMARK2
+	   					      , TITLE_REMARK3
+	   					      , WRITER
+	   					      , WRITER_id
+	   					      , BAM_ANC_IDX
+	   					   
+	   					       )
+	                 VALUES(   #{bpm_bplan_idx}
+	                 		  , 1 
+	                 		  , #{title_remark1}
+	                 		  , #{title_remark2}
+	                 		  , #{title_remark3}
+	                 		  , #{writer}
+	                 		  , #{writer_id}
+	                 		  , #{bam_anc_idx}
+	                 		    )
+   
+   </insert>
+   
+   
+<select id="businessPlanApplyList" resultType="emp.bpm.vo.BusinessPlanVO" parameterType="hashMap">
+		SELECT  BPM_BPLAN_IDX 
+	   					      , BOARD_IDX 
+	   					      , BAM_ANC_IDX
+	   					      , TITLE_REMARK1
+	   					      , TITLE_REMARK2
+	   					      , TITLE_REMARK3
+							  , WRITER_ID
+	   					      , WRITER
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      , STATUS
+		 FROM ( 
+		        SELECT BPM_BPLAN_IDX 
+	   					      , BOARD_IDX 
+	   					      , BAM_ANC_IDX
+	   					      , TITLE_REMARK1
+	   					      , TITLE_REMARK2
+	   					      , TITLE_REMARK3
+	   					      , WRITER
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      , STATUS	
+	   					      , WRITER_ID
+		               ,ROW_NUMBER() OVER(ORDER BY BPM_BPLAN_IDX DESC) AS RNUM
+		         FROM EMP_BPM_BPLAN
+		         WHERE 1=1 
+		         AND BAM_ANC_IDX = #{bam_anc_idx}
+		         AND DEL_YN = 'N'
+		         	<include refid="search"></include>
+		                       ) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY BPM_BPLAN_IDX DESC
+	</select>
+		<select id="businessPlanApplyDetail" parameterType="int" resultType="emp.bpm.vo.BusinessPlanVO">
+		SELECT	BPM_BPLAN_IDX 
+	   					      , BOARD_IDX 
+	   					      , BAM_ANC_IDX
+	   					      , TITLE_REMARK1
+	   					      , TITLE_REMARK2
+	   					      , TITLE_REMARK3					  	
+	   					      , WRITER
+	   					      , STATUS
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      , WRITER_ID
+		 FROM EMP_BPM_BPLAN
+		 WHERE BPM_BPLAN_IDX = #{bpm_bplan_idx}
+	</select>
+	
+	    <update id="businessPlanApplyUpdate" parameterType="emp.bpm.vo.BusinessPlanVO">
+		UPDATE EMP_BPM_BPLAN SET  
+					  		    TITLE_REMARK1 = #{title_remark1}
+					   		  , TITLE_REMARK2 = #{title_remark2}
+					  		  , TITLE_REMARK3 = #{title_remark3}					   	
+		WHERE BPM_BPLAN_IDX = #{bpm_bplan_idx}
+	</update> 
+	
+	
+	
+	<!-- <delete id="delete" parameterType="int">
+		DELETE 
+		  FROM MP_BOARD
+		 WHERE BNO = #{bno}
+	</delete> -->
+	
+	<select id="listCount" parameterType="emp.bpm.util.SearchCriteria" resultType="int">
+		SELECT COUNT(BPM_BPLAN_IDX)
+		   FROM EMP_BPM_BPLAN
+		   WHERE 1=1
+		   AND DEL_YN = 'N'
+		<include refid="search"></include>	
+		   AND BPM_BPLAN_IDX > 0
+	</select>
+	<sql id="search">
+		<if test="searchType != null">	
+			<if test="searchType == 'w'.toString()">AND WRITER LIKE '%' || #{keyword} || '%'</if>
+		</if>
+	</sql>
+	
+
+	   <insert id="insertFile" parameterType="hashMap">
+		INSERT INTO EMP_FILE(
+			FILE_IDX,
+			BOARD_IDX,
+			BOARD_LIST_IDX,
+			FILE_FNAME,
+			FILE_SNAME,
+			FILE_SIZE
+		)VALUES(
+			SEQ_FILE_IDX.NEXTVAL,
+			2,
+			#{bpm_bplan_idx},
+			#{file_fname},
+			#{file_sname},
+			#{file_size}
+		)
+    </insert> 
+
+
+	 <select id="selectFileList" parameterType="int" resultType="hashMap">
+	SELECT  FILE_IDX,
+			FILE_FNAME,
+			ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+		
+		FROM EMP_FILE
+		WHERE BOARD_LIST_IDX = #{bpm_bplan_idx}
+		AND BOARD_IDX = 2
+		AND DEL_YN = 'N'
+		ORDER BY FILE_IDX ASC
+</select> 
+
+
+	<select id="selectFileInfo" parameterType="hashMap"
+		resultType="hashMap">
+		SELECT
+		FILE_SNAME,
+		FILE_FNAME
+		FROM EMP_FILE
+		WHERE FILE_IDX = #{FILE_IDX}
+	</select>
+
+	<update id="updateFile" parameterType="hashMap">
+		UPDATE EMP_FILE SET
+		DEL_YN = 'Y'
+		WHERE FILE_NO = #{file_idx}
+	</update>  
+   
+    <select id="businessPlanApplyMyList" resultType="emp.bpm.vo.BusinessPlanVO" parameterType="hashMap">
+		SELECT BPM_BPLAN_IDX,
+               BAM_ANC_IDX,
+               BOARD_IDX,
+               TITLE_REMARK1,
+               TITLE_REMARK2,
+               TITLE_REMARK3,
+               WRITER,
+	           REG_DATE,
+               MOD_DATE,
+	           STATUS,	
+	           WRITER_ID,
+               ANC_TITLE
+        FROM (SELECT EBB.BPM_BPLAN_IDX,
+                     EBB.BAM_ANC_IDX,
+                     EBB.BOARD_IDX,
+                     EBB.TITLE_REMARK1,
+                     EBB.TITLE_REMARK2,
+                     EBB.TITLE_REMARK3,
+                     EBB.WRITER,
+	                 EBB.REG_DATE,
+                     EBB.MOD_DATE,
+	                 EBB.STATUS,	
+	                 EBB.WRITER_ID,
+	                 EB.ANC_TITLE,
+	                 ROW_NUMBER() OVER(ORDER BY BPM_BPLAN_IDX DESC) AS RNUM
+              FROM EMP_BPM_BPLAN EBB, EMP_BAM_ANC EB
+              WHERE EBB.BAM_ANC_IDX = EB.BAM_ANC_IDX 
+              AND WRITER_ID = #{user_id} AND EB.DEL_YN = 'N'
+              <include refid="search"></include>) MP 
+        WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd} 
+        ORDER BY BPM_BPLAN_IDX DESC
+	</select>
+	<!-- SELECT  BPM_BPLAN_IDX 
+							  , BAM_ANC_IDX
+	   					      , BOARD_IDX 
+	   					      , TITLE_REMARK1
+	   					      , TITLE_REMARK2
+	   					      , TITLE_REMARK3							
+	   					      , WRITER
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      , STATUS
+	   					      , WRITER_ID
+		 FROM ( 
+		        SELECT BPM_BPLAN_IDX
+		        			  , BAM_ANC_IDX 
+	   					      , BOARD_IDX 
+	   					      , TITLE_REMARK1
+	   					      , TITLE_REMARK2
+	   					      , TITLE_REMARK3
+	   					      , WRITER
+	   					      , REG_DATE
+	   					      , MOD_DATE
+	   					      , STATUS
+	   					      , WRITER_ID
+	   					        
+		               ,ROW_NUMBER() OVER(ORDER BY BPM_BPLAN_IDX DESC) AS RNUM
+		         FROM EMP_BPM_BPLAN
+		         WHERE 1=1 
+		         AND WRITER_id = #{user_id}
+		         AND DEL_YN = 'N'
+		         	<include refid="search"></include>
+		                       ) MP
+		WHERE RNUM BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY BPM_BPLAN_IDX DESC; -->
+	
+	<select id="businessPlanApplyForm" parameterType="int" resultType="hashMap">
+		SELECT BPM_BPLAN_FORM_IDX
+							  , BAM_ANC_IDX
+							  , BPLAN_FORM_TITLE1
+							  , BPLAN_FORM_TITLE2
+							  , BPLAN_FORM_TITLE3
+							  , BPLAN_FORM_TITLE4
+							  FROM EMP_BPM_BPLAN_FORM
+							  WHERE 1=1
+							  AND DEL_YN = 'N'
+							  AND BAM_ANC_IDX = #{bam_anc_idx}
+
+	</select>
+	
+	<!-- 사업 계획서 연구개발비 등록 -->
+	<insert id="businessPlanInputCost" parameterType="emp.bpm.vo.BusinessPlanCostVO">
+	
+	   INSERT INTO EMP_BPM_BPLAN_COST(
+	   						BPM_BPLAN_IDX 
+	   					      , BOARD_IDX
+	   					      , BPM_BPLAN_COST_IDX 
+	   					      , BPLAN_COST_VALUE1
+	   					      , BPLAN_COST_VALUE2
+	   					      , BPLAN_COST_VALUE3
+	   					      , BPLAN_COST_VALUE4
+	   					      , BPLAN_COST_VALUE5
+	   					      , BPLAN_COST_VALUE6
+	   					      , BPLAN_COST_VALUE7
+	   					      , BPLAN_COST_VALUE8	
+	   					      , BPLAN_COST_VALUE9
+	   					      , BPLAN_COST_VALUE10
+	   					      , BPLAN_COST_VALUE11
+	   					      , BPLAN_COST_VALUE12
+	   					      , BPLAN_COST_VALUE13
+	   					      , BPLAN_COST_VALUE14
+	   					      , BPLAN_COST_VALUE15
+	   					      , BPLAN_COST_VALUE16
+	   					      , BPLAN_COST_VALUE17
+	   					      , BPLAN_COST_VALUE18
+	   					      , BPLAN_COST_VALUE19
+	   					      , BPLAN_COST_VALUE20
+	   					      					      
+	   					       )
+	   					       
+	                 VALUES ( 
+	                 			#{bpm_bplan_idx}
+	                 		  , 2
+	                 		  , SEQ_BPM_BPLAN_COST_IDX.NEXTVAL
+	                 		  , #{bplan_cost_value1}
+	                 		  , #{bplan_cost_value2}
+	                 		  , #{bplan_cost_value3}
+	                 		  , #{bplan_cost_value4}
+	                 		  , #{bplan_cost_value5}
+	                 		  , #{bplan_cost_value6}
+	                 		  , #{bplan_cost_value7}
+	                 		  , #{bplan_cost_value8}
+	                 		  , #{bplan_cost_value9}
+	                 		  , #{bplan_cost_value10}
+	                 		  , #{bplan_cost_value11}
+	                 		  , #{bplan_cost_value12}
+	                 		  , #{bplan_cost_value13}
+	                 		  , #{bplan_cost_value14}
+	                 		  , #{bplan_cost_value15}
+	                 		  , #{bplan_cost_value16}
+	                 		  , #{bplan_cost_value17}
+	                 		  , #{bplan_cost_value18}
+	                 		  , #{bplan_cost_value19}
+	                 		  , #{bplan_cost_value20}
+	                 		
+	                 		    )
+   
+  	 </insert>
+  	 
+  	 <select id="businessPlanSelectCost" parameterType="int" resultType="emp.bpm.vo.BusinessPlanCostVO">
+	  	  SELECT BPM_BPLAN_IDX 
+		   					      , BOARD_IDX
+		   					      , BPM_BPLAN_COST_IDX 
+		   					      , BPLAN_COST_VALUE1
+		   					      , BPLAN_COST_VALUE2
+		   					      , BPLAN_COST_VALUE3
+		   					      , BPLAN_COST_VALUE4
+		   					      , BPLAN_COST_VALUE5
+		   					      , BPLAN_COST_VALUE6
+		   					      , BPLAN_COST_VALUE7
+		   					      , BPLAN_COST_VALUE8
+		   					      , BPLAN_COST_VALUE9
+		   					      , BPLAN_COST_VALUE10
+		   					      , BPLAN_COST_VALUE11
+		   					      , BPLAN_COST_VALUE12
+		   					      , BPLAN_COST_VALUE13
+		   					      , BPLAN_COST_VALUE14
+		   					      , BPLAN_COST_VALUE15
+		   					      , BPLAN_COST_VALUE16
+		   					      , BPLAN_COST_VALUE17
+		   					      , BPLAN_COST_VALUE18
+		   					      , BPLAN_COST_VALUE19
+		   					      , BPLAN_COST_VALUE20	
+		   					  
+		   			FROM EMP_BPM_BPLAN_COST
+		   			WHERE 1=1
+		   			AND DEL_YN ='N'
+		   			AND BPM_BPLAN_IDX = #{bpm_bplan_idx}  	 
+  	 	</select>
+  	 	
+  	 	<!-- 연구개발비 수정 -->
+  	 	<update id="businessPlanApplyCostUpdate" parameterType="emp.bpm.vo.BusinessPlanCostVO">
+		UPDATE EMP_BPM_BPLAN_COST SET  
+		   					        BPLAN_COST_VALUE1 = #{bplan_cost_value1}
+		   					      , BPLAN_COST_VALUE2 = #{bplan_cost_value2}
+		   					      , BPLAN_COST_VALUE3 = #{bplan_cost_value3}
+		   					      , BPLAN_COST_VALUE4 = #{bplan_cost_value4}
+		   					      , BPLAN_COST_VALUE5 = #{bplan_cost_value5}
+		   					      , BPLAN_COST_VALUE6 = #{bplan_cost_value6}
+		   					      , BPLAN_COST_VALUE7 = #{bplan_cost_value7}
+		   					      , BPLAN_COST_VALUE8 = #{bplan_cost_value8}	
+		   					      , BPLAN_COST_VALUE9 = #{bplan_cost_value9}
+		   					      , BPLAN_COST_VALUE10 = #{bplan_cost_value10}
+		   					      , BPLAN_COST_VALUE11 = #{bplan_cost_value11}
+		   					      , BPLAN_COST_VALUE12 = #{bplan_cost_value12}
+		   					      , BPLAN_COST_VALUE13 = #{bplan_cost_value13}
+		   					      , BPLAN_COST_VALUE14 = #{bplan_cost_value14}
+		   					      , BPLAN_COST_VALUE15 = #{bplan_cost_value15}
+		   					      , BPLAN_COST_VALUE16 = #{bplan_cost_value16}
+		   					      , BPLAN_COST_VALUE17 = #{bplan_cost_value17}
+		   					      , BPLAN_COST_VALUE18 = #{bplan_cost_value18} 
+		   					      , BPLAN_COST_VALUE19 = #{bplan_cost_value19}
+		   					      , BPLAN_COST_VALUE20 = #{bplan_cost_value20}	
+		   					      
+				WHERE BPM_BPLAN_IDX = #{bpm_bplan_idx}
+		</update> 
+	
+  	 	<select id="businessPlanEvalMember" parameterType="int" resultType="hashMap">
+  	 		SELECT BAM_ANC_IDX
+			  	 				, BAM_ANC_MEMBER_IDX
+			  	 				, ANC_MEMBER_ID
+			  	 				, ANC_MEMBER_NAME
+  	 				
+  	 				FROM EMP_BAM_ANC_MEMBER
+  	 				WHERE 1=1
+  	 				AND DEL_YN = 'N'
+  	 				AND BAM_ANC_IDX = #{bam_anc_idx}
+  	 	</select>
+  	 	
+  	 	<update id="businessPlanStatusUpdate">
+  	 	
+			UPDATE EMP_BPM_BPLAN SET
+									STATUS = '2'	
+				WHERE BAM_ANC_IDX 
+				IN(
+				SELECT A.BAM_ANC_IDX FROM EMP_BAM_ANC  A , EMP_BPM_BPLAN  B
+				
+				WHERE
+					A.BAM_ANC_IDX = B.BAM_ANC_IDX
+					<![CDATA[ 
+					AND ANC_END_DT < SYSDATE
+					]]>
+					)
+  	 	</update>
+  	 	
+</mapper>
+	

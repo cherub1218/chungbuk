@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		
+		<!-- 스케쥴러파일이 존재하는 패키지 설정 -->
+    <context:component-scan base-package="emp.cmm.scheduler" />
+	<!-- 해당 태그들은 크론탭을 설정에 필요한 태그들 -->
+	<task:scheduler id="jobScheduler" pool-size="10" />
+	<task:annotation-driven scheduler="jobScheduler" />  
+	     
+			<!-- 오라클 접속 -->
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+        <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+        <property name="url" value="jdbc:log4jdbc:oracle:thin:@lfit2.ckiyicdimdfw.ap-northeast-2.rds.amazonaws.com:1521/orcl"/>
+        <property name="username" value="admin"/>
+        <property name="password" value="lfit1106"/>
+    </bean>
+   
+    <!-- Mybatis 연동 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+         <property name="dataSource" ref="dataSource"></property>
+         <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+         <property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"/>
+    </bean>
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+    </bean>
+		
+		   <!-- scan -->
+    <context:component-scan base-package="emp.bam"></context:component-scan>
+    <context:component-scan base-package="emp.bam.controller"></context:component-scan>
+    <context:component-scan base-package="emp.bam.service"></context:component-scan>	
+    <context:component-scan base-package="emp.bam.dao"></context:component-scan>
+    <context:component-scan base-package="emp.bam.vo"></context:component-scan>
+    <context:component-scan base-package="emp.bam.util"></context:component-scan>
+    
+    <context:component-scan base-package="emp.bpm"></context:component-scan>
+    <context:component-scan base-package="emp.bpm.controller"></context:component-scan>
+    <context:component-scan base-package="emp.bpm.service"></context:component-scan>
+    <context:component-scan base-package="emp.bpm.dao"></context:component-scan>
+    <context:component-scan base-package="emp.bpm.vo"></context:component-scan>
+    <context:component-scan base-package="emp.bpm.util"></context:component-scan>
+     
+     
+    <context:component-scan base-package="emp.bem"></context:component-scan>
+    <context:component-scan base-package="emp.bem.controller"></context:component-scan>
+    <context:component-scan base-package="emp.bem.service"></context:component-scan>
+    <context:component-scan base-package="emp.bem.dao"></context:component-scan>
+    <context:component-scan base-package="emp.bem.vo"></context:component-scan>
+    <context:component-scan base-package="emp.bem.util"></context:component-scan> 
+    
+    <context:component-scan base-package="emp.cmm"></context:component-scan>
+    <context:component-scan base-package="emp.cmm.controller"></context:component-scan>
+    <context:component-scan base-package="emp.cmm.service"></context:component-scan>
+    <context:component-scan base-package="emp.cmm.dao"></context:component-scan>
+    <context:component-scan base-package="emp.cmm.vo"></context:component-scan>
+    <context:component-scan base-package="emp.cmm.util"></context:component-scan>
+    
+</beans>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width,user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" name="Viewport" />
+    <link rel="stylesheet" href="../../resource/css/reset.css">
+    <link rel="stylesheet" href="../../resource/css/common.css">
+    <link rel="stylesheet" href="../../resource/css/sub.css">
+    <link rel="stylesheet" href="../../resource/css/board.css">
+    <link rel="stylesheet" href="../../resource/css/jquery-ui.css">
+
+    <script type="text/javascript" src="../../resource/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="../../resource/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="../../resource/js/sub.js"></script>
+
+    <title>충북대 평가관리프로그램</title>
+</head>
+<body>
+    <div class="wrap">
+        <dl id="skip_nav">
+            <dt>메뉴 건너띄기</dt>
+            <dd>
+                <a href="#contents">본문 바로가기</a>
+                <a href="#gnb">대메뉴 바로가기</a>
+            </dd>
+        </dl>
+        <header>
+            <h1 class="logo">
+                <img src="../../resource/image/logo.jpg" alt="충북대학교">
+                <span>평가관리프로그램</span>
+            </h1>
+            <div class="log row">
+                <p>[<span>상급 관리자</span>]님, 안녕하세요!</p>
+                <p><img src="" alt=""></p>
+                <a href="#">로그아웃</a>
+            </div>
+        </header>
+        <div class="content">
+            <span id="contents"></span>
+            <div class="row content_outer">
+                <ul class="location row">
+                    <li>사용자</li>
+                    <li>사업공고</li>
+                </ul>
+                <div class="lnb">
+                    <p class="tit">사용자</p>
+                    <ul>
+                        <li>
+                            <a href="#">사업분류</a>
+                        </li>
+                        <li class="on">
+                            <a href="#">사업공고</a>
+                            <ul class="second_menu">
+                                <li>· 사업공고일정</li>
+                                <li class="on">· 사업공지</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">사업질의응답</a>
+                        </li>
+                        <li>
+                            <a href="#">사업자료실</a>
+                        </li>
+                        <li>
+                            <a href="#">정보서비스</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cont">
+                    <h2>사업공지</h2>
+                    <div class="inner box search_box">
+                        <form method="get" action="?">
+                            <div class="board_search row">
+                                <div class="search_box">
+                                    <div class="search2">
+                                        <div class="s_select">
+                                            <label for="srSearchKey">검색분류</label>
+            
+                                            <select for="" name="srSearchKey" id="srSearchKey" title="분류값 제목, 내용, 연구책임자 선택">
+                                                <option value="">제목</option>
+                                                <option value="article_title">제목</option>
+                                                <option value="article_text">내용</option>
+                                                <option value="opel">연구책임자</option>
+                                            </select>
+            
+                                        </div>
+                                        <div class="s_search">
+                                            <input type="text" class="form-control" title="검색어 입력" id="search_val" name="srSearchVal" value="" placeholder="검색어를 입력해 주세요" aria-label="" aria-describedby="basic-addon1">
+                                            <input type="submit" title="검색" value="" class="btn_finder_s search_btn" onclick="javascript: document.search_form.submit();">
+                                        </div>
+            
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- //board_search -->
+                        </form>
+                    </div>
+                    <div class="inner box mt15">
+                        게시판 설명 영역
+                    </div>
+
+                    <div class="inner">
+                        <div class="total">총 12570건</div>
+                        
+
+                        <div class="board-wrap">
+                            <table class="board-basic type-row">
+                                <caption>사업안내 | 사업공고 | 사업공지에  사업명, 작성자, 내용, 공고기간, 첨부파일을 나타낸  테이블</caption>
+                                <colgroup>
+                                    <col style="width:10%">
+                                    <col style="width:auto">
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><span>* </span>사업명</th>
+                                        <td>
+                                            <input type="text" name="mb_id" id="mb_id" class="" value="" placeholder="제목을 입력하세요.">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><span>* </span>작성자</th>
+                                        <td>
+                                            <input type="text" name="mb_id" id="mb_id" class="" value="" placeholder="관리자4">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><span>* </span>내용</th>
+                                        <td>
+                                            <textarea></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">공고기간</th>
+                                        <td>
+                                            <input placeholder="시작 날짜" class="date" type="text" id="datepicker"  title="입력 시작날짜">
+                                            <input placeholder="마감 날짜" class="date" type="text" id="datepicker"  title="입력 마감날짜">
+                                        <td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">첨부파일</th>
+                                        <td>
+                                            <div class="row">
+                                                <input type="file" id="submit" class="form file upload-hidden">
+                                                <input class="upload-name" value="" disabled="disabled" placeholder="업로드한 파일이 없습니다.">
+                                                <label for="submit">파일첨부</label>
+                                            </div>
+
+                                            <!-- <input type="file" name="bf_file[]" id="bf_file_2" class="file-loadingz" style="padding-bottom:5px" data-show-preview="false" onchange="checkFile(this)"> -->
+                                        </td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div> 
+                        
+                        <div class="board_btn_wrap btn2 right">
+                            <div class="btn_wrap  row">
+                                <button type="button" class="gray" onclick="window.location.href=''">목록보기</button>
+                                <button type="button" class="red" onclick="window.location.href=''">등록</button>
+                                <button type="button" class="gray" onclick="window.location.href=''">취소</button>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+        <footer></footer>
+        <script>
+            $(function() {
+                $("#datepicker").datepicker({
+                });
+            });
+
+    </script>
+    </div>
+</body>
+</html>

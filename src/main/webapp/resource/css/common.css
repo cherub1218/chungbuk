@@ -5,7 +5,7 @@
 #skip_nav dd.on{height: 40px;position: absolute;z-index: 9999;width: 100%;}
 #skip_nav dd a {display:block; position:absolute; top:-50px; left:0; z-index:10; width:100%; background:#e7e7e7; line-height:14px; font-size:18px; color:#333; text-decoration:none; text-align:center;line-height:36px;}
 #skip_nav dd a:active, #skip_nav dd a:focus {top:0;}
-header{height:110px;}
+header{-ms-display: flexbox;display:flex;display: -moz-box;display: -ms-flexbox;display:-webkit-flex;align-items:center;justify-content:space-between;height:110px;padding:0 20px;}
 header .insideArea{-ms-display: flexbox;display:flex;display: -moz-box;display: -ms-flexbox;display:-webkit-flex;align-items:center;justify-content:space-between;height:110px; padding:0 15px;box-sizing:border-box;}
 .insideArea{max-width:1280px;margin:0 auto;}
 .logo{-ms-display: flexbox;display:flex;display: -moz-box;display: -ms-flexbox;display:-webkit-flex;align-items:flex-start;}
@@ -14,7 +14,7 @@ header .insideArea{-ms-display: flexbox;display:flex;display: -moz-box;display: 
 .log > p span{font-weight:bold}
 .log > a{margin-left:20px;text-decoration:underline}
 .content_outer{flex-wrap:wrap;margin-bottom:40px;}
-.location{width:100%;height:50px;padding:0 20px;margin-bottom:20px;background-color:#616161; box-sizing:border-box}
+.location{align-items:center;width:100%;height:50px;padding:0 20px;margin-bottom:20px;background-color:#616161; box-sizing:border-box}
 .location > ul{height:100%;line-height:50px}
 .location li{position:relative;color:#fff;font-size:14px;}
 .location li + li{margin-left:10px;padding-left:20px;}
@@ -23,7 +23,7 @@ header .insideArea{-ms-display: flexbox;display:flex;display: -moz-box;display: 
 .lnb{width:200px;border:1px solid #ccc;box-sizing:border-box;}
 .lnb .tit{-ms-display: flexbox;display:flex;display: -moz-box;display: -ms-flexbox;display:-webkit-flex;align-items:center;justify-content:center;height:80px;font-size:18px;font-weight:500;background-color:#952953;color:#fff;}
 .lnb ul{padding:25px 10px;box-sizing:border-box;}
-.lnb ul.second_menu {padding:10px;}
+.lnb ul.second_menu {display:none;padding:10px;}
 .lnb ul.second_menu li {padding: 5px 0;color:#616161;font-weight:600;letter-spacing:-0.5px;font-size: 15px;}
 .lnb ul.second_menu li.on {color:#952953;font-weight:600;letter-spacing:-0.5px;}
 .lnb li + li {margin-top:7px;}
@@ -84,6 +84,10 @@ header .insideArea{-ms-display: flexbox;display:flex;display: -moz-box;display: 
 .gnb > ul > li > a:before{position:absolute;width:0;height:3px;left:50%;bottom:-0px;content:"";transition:all .2s ease-in-out;background:#000;}
 .gnb > ul > li > a:hover{color:#952953}
 .gnb > ul > li.on > a:before{width:100%;left:0;}
+.gnb > ul > li > ul{display:none;position:absolute;top:110px;left:0;width:100%;}
+.gnb > ul > li > ul li{height:50px;line-height:50px;background-color:#ececec;text-align:center;}
+.gnb > ul > li > ul li + li{border-top:1px solid #ccc;}
+.gnb > ul > li > ul li a{display:block;width:100%;height:100%;}
 
 .sub_menu{overflow:hidden;position:absolute;top:94.5px;left:0;z-index:1000;width:100%;height:0;background:#952953;opacity:0;transition:all .2s ease-in-out;transform:translateY(30px);}
 .sub_menu a{display:block;padding:3px 10px;box-sizing:border-box;color:#fff;font-size:14px;letter-spacing: -0.05em;text-align:center}
@@ -91,5 +95,9 @@ header .insideArea{-ms-display: flexbox;display:flex;display: -moz-box;display: 
 .sub_menu.ls a{padding:3px 6px;letter-spacing: -0.1em;}
 .gnb > ul > li.on .sub_menu{overflow:visible;height:auto;transition:all .1s  ease-in-out;opacity:1;transform:translateY(16px); }
 
-
-
+.form.area{min-width:400px;min-height:100px;padding:15px;border:1px solid #c4c4c4;border-radius:3px;}
+.form.sel{width:200px;padding: 10px 18px;border-radius: 3px;color: #000;-webkit-appearance:none; /*네이티브 외형 감추기*/-moz-appearance:none;appearance:none;background:url('../image/common/icon/icon_clampDown.png') no-repeat 90% 50%;}
+.form.file.upload-hidden{overflow:hidden;position:absolute;display:none;width:1px;height:1px;padding:0;margin:0;border:0;}
+.form.file + .upload-name{display:inline-block;width:210px;height:37px;padding:10px 18px;border-radius:3px;border-top:1px solid #9a9a9a;border-left:1px solid #9a9a9a;border-right:1px solid #9a9a9a;border-bottom:1px solid #9a9a9a;color:#a8a8a8;background:transparent;-webkit-appearance:none;-moz-appearance:none;appearance:none;vertical-align:middle;}
+.form.file + .upload-name + label{display:inline-block;position:relative;left:0;width:80px;height:37px;margin-left:10px;background:#888;color:#fff;line-height:37px;cursor:pointer;font-size:14px;vertical-align:middle;text-align:center;}
+.form.file + .upload-name::placeholder{font-size:14px;text-indent:0;}

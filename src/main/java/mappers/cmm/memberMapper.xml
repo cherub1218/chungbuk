@@ -161,4 +161,13 @@
 		SELECT COUNT(*) FROM EMP_MEMBER
 		WHERE USER_CRCODE = #{user_crcode}
 	</select>
+	
+	<!-- 사용 / 미사용  -->
+	<update id="memberDelYN">
+		UPDATE EMP_MEMBER
+			<set>
+			DEL_YN = #{del_yn}
+			</set>
+		WHERE MEMBER_IDX = #{member_idx}
+	</update>
 </mapper>

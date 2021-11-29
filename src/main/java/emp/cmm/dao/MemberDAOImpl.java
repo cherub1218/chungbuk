@@ -15,7 +15,7 @@ import emp.cmm.vo.MemberVO;
 public class MemberDAOImpl implements MemberDAO {
 	
 	@Inject SqlSession sql;
-	// 회원가입
+	// �쉶�썝媛��엯
 
 	@Override
 	public void register(MemberVO vo) throws Exception {
@@ -27,61 +27,61 @@ public class MemberDAOImpl implements MemberDAO {
 		return sql.selectOne("memberMapper.login", vo);
 	}
 	
-	//서비스에서 보낸 파라미터들을 memberUpdate(MemberVO vo)에 담습니다.
+	//�꽌鍮꾩뒪�뿉�꽌 蹂대궦 �뙆�씪誘명꽣�뱾�쓣 memberUpdate(MemberVO vo)�뿉 �떞�뒿�땲�떎.
 	@Override
 	public void memberUpdate(MemberVO vo) throws Exception {
-		// vo에 담긴 파라미터들은 memberMapper.xml에 memberMapper라는 namespace에 
-		// 아이디가 memberUpdate인 쿼리에 파라미터들을 넣어줍니다.
+		// vo�뿉 �떞湲� �뙆�씪誘명꽣�뱾�� memberMapper.xml�뿉 memberMapper�씪�뒗 namespace�뿉 
+		// �븘�씠�뵒媛� memberUpdate�씤 荑쇰━�뿉 �뙆�씪誘명꽣�뱾�쓣 �꽔�뼱以띾땲�떎.
 		sql.update("memberMapper.memberUpdate", vo); 
 	}
 	
-	// 업데이트와 마찬가지로 흐름은 같습니다.
+	// �뾽�뜲�씠�듃�� 留덉갔媛�吏�濡� �쓲由꾩� 媛숈뒿�땲�떎.
 @Override
 public void memberDelete(MemberVO vo) throws Exception {
-	// MemberVO에 담긴 값들을 보내줍니다.
-	// 그럼 xml에서 memberMapper.memberDelete에 보시면
-	//  #{userId}, #{userPass}에 파라미터값이 매칭이 되겠지요.
+	// MemberVO�뿉 �떞湲� 媛믩뱾�쓣 蹂대궡以띾땲�떎.
+	// 洹몃읆 xml�뿉�꽌 memberMapper.memberDelete�뿉 蹂댁떆硫�
+	//  #{userId}, #{userPass}�뿉 �뙆�씪誘명꽣媛믪씠 留ㅼ묶�씠 �릺寃좎��슂.
 	sql.delete("memberMapper.memberDelete", vo);
 	
 	}
 
 
-//패스워드 체크
+//�뙣�뒪�썙�뱶 泥댄겕
 @Override
 public int passChk(MemberVO vo) throws Exception {
 	int result = sql.selectOne("memberMapper.passChk", vo);
 	return result;
 }
 
-//아이디 중복 체크
+//�븘�씠�뵒 以묐났 泥댄겕
 @Override
 public int idChk(MemberVO vo) throws Exception {
 	int result = sql.selectOne("memberMapper.idChk", vo);
 	return result;
 }
 
-//사업자등록번호 중복 체크
+//�궗�뾽�옄�벑濡앸쾲�샇 以묐났 泥댄겕
 @Override
 public int crcodeChk(MemberVO vo) throws Exception {
 	int result = sql.selectOne("memberMapper.crcodeChk", vo);
 	return result;
 }
 
-//회원정보 조회
+//�쉶�썝�젙蹂� 議고쉶
 @Override
 public List<Map<String, Object>> memberList() throws Exception {
 	// TODO Auto-generated method stub
 	return sql.selectList("memberMapper.memberList");
 }
-//선정된 평가위원 리스트
+//�꽑�젙�맂 �룊媛��쐞�썝 由ъ뒪�듃
 @Override
 public List<Map<String, Object>> evalList(int bam_anc_idx) throws Exception {
 	// TODO Auto-generated method stub
 	return sql.selectList("memberMapper.evalList",bam_anc_idx);
 }
 
-//회원 관리
-// 회원목록
+//�쉶�썝 愿�由�
+// �쉶�썝紐⑸줉
 @Override
 public List<MemberVO> memberMngList() throws Exception {
     return sql.selectList("memberMapper.memberMngList");
@@ -104,6 +104,13 @@ public void deleteMember(String user_id) throws Exception {
 public void updateMember(MemberVO vo) throws Exception {
     // TODO Auto-generated method stub
 
+}
+
+@Override
+public void memberDelYN(MemberVO vo) throws Exception {
+	// vo�뿉 �떞湲� �뙆�씪誘명꽣�뱾�� memberMapper.xml�뿉 memberMapper�씪�뒗 namespace�뿉 
+	// �븘�씠�뵒媛� memberUpdate�씤 荑쇰━�뿉 �뙆�씪誘명꽣�뱾�쓣 �꽔�뼱以띾땲�떎.
+	sql.update("memberMapper.memberDelYN", vo); 
 }
 
 

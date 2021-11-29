@@ -7,33 +7,34 @@ import emp.bam.vo.BusinessAnnouncementVO;
 import emp.cmm.vo.MemberVO;
 
 public interface MemberService {
-	//회원가입
+	//�쉶�썝媛��엯
 	public void register(MemberVO vo) throws Exception;
-	//로그인
+	//濡쒓렇�씤
 	public MemberVO login(MemberVO vo) throws Exception;
-	//회원정보 수정
+	//�쉶�썝�젙蹂� �닔�젙
 	public void memberUpdate(MemberVO vo) throws Exception;
-	//회원정보 삭제
+	//�쉶�썝�젙蹂� �궘�젣
 	public void memberDelete(MemberVO vo) throws Exception;
-	//패스워드체크
+	//�뙣�뒪�썙�뱶泥댄겕
 	public int passChk(MemberVO vo) throws Exception;
-	//아이디체크
+	//�븘�씠�뵒泥댄겕
 	public int idChk(MemberVO vo) throws Exception;
-	//사업자등록번호체크
+	//�궗�뾽�옄�벑濡앸쾲�샇泥댄겕
 	public int crcodeChk(MemberVO vo) throws Exception;
-	//멤버리스트 조회 
+	//硫ㅻ쾭由ъ뒪�듃 議고쉶 
 	public List<Map<String,Object>> memberList() throws Exception;
-	//선정된 평가위원 리스트 조회
+	//�꽑�젙�맂 �룊媛��쐞�썝 由ъ뒪�듃 議고쉶
 	public List<Map<String,Object>> evalList(int bam_anc_idx) throws Exception;
-	// 회원 관리
+	// �쉶�썝 愿�由�
 	
-    // 회원 목록 
+    // �쉶�썝 紐⑸줉 
     public List<MemberVO> memberMngList() throws Exception;
-    // 회원 정보 상세보기 
+    // �쉶�썝 �젙蹂� �긽�꽭蹂닿린 
     public MemberVO memberMngDetail(int member_idx) throws Exception;
-    // 회원삭제
+    // �쉶�썝�궘�젣
     public void deleteMember(String user_id) throws Exception;
-    // 회원정보 수정
+    // �쉶�썝�젙蹂� �닔�젙
     public void updateMember(MemberVO vo) throws Exception;
+    public void memberDelYN(MemberVO vo) throws Exception;
 
 }

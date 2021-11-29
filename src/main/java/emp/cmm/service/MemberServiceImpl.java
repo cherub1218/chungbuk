@@ -46,40 +46,40 @@ public class MemberServiceImpl implements MemberService {
 		dao.memberDelete(vo);
 		}
 	
-	//패스워드 체크
+	//�뙣�뒪�썙�뱶 泥댄겕
 	@Override
 	public int passChk(MemberVO vo) throws Exception {
 		int result = dao.passChk(vo);
 		return result;
 	}
 	
-	//아이디 중복 체크
+	//�븘�씠�뵒 以묐났 泥댄겕
 	@Override
 	public int idChk(MemberVO vo) throws Exception {
 		int result = dao.idChk(vo);
 		return result;
 	}
-	//사업자등록번호 중복 체크
+	//�궗�뾽�옄�벑濡앸쾲�샇 以묐났 泥댄겕
 	@Override
 	public int crcodeChk(MemberVO vo) throws Exception {
 		int result = dao.crcodeChk(vo);
 		return result;
 	}
-	//멤버리스트 조회
+	//硫ㅻ쾭由ъ뒪�듃 議고쉶
 	@Override
 	public List<Map<String, Object>> memberList() throws Exception {
 		// TODO Auto-generated method stub
 		return dao.memberList();
 	}
 	
-	//선정된 평가위원 리스트
+	//�꽑�젙�맂 �룊媛��쐞�썝 由ъ뒪�듃
     @Override
     public List<Map<String, Object>> evalList(int bam_anc_idx) throws Exception {
     	// TODO Auto-generated method stub
     	return dao.evalList(bam_anc_idx);
     }
 	
-	////****회원 관리
+	////****�쉶�썝 愿�由�
     @Override
     public List<MemberVO> memberMngList() throws Exception {
         return dao.memberMngList();
@@ -100,6 +100,11 @@ public class MemberServiceImpl implements MemberService {
     public void updateMember(MemberVO vo) throws Exception {
         
     }
+    
+    @Override
+	public void memberDelYN(MemberVO vo) throws Exception{
+		dao.memberDelYN(vo);
+	}
     
 
 }

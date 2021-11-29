@@ -167,9 +167,6 @@ body{
 
 <body>
 	<div class="container" id="root" style="margin-top: 30px;">
-		<div style="float: right;">
-			<%@include file="../board/nav.jsp"%>
-		</div>
 		<header>
 			<h1>사업 리스트 등록</h1>
 		</header>

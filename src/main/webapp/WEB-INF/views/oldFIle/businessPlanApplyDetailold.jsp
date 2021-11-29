@@ -114,9 +114,6 @@
 <body>
 
 	<div class="container" id="root" style="margin-bottom:10px;">
-		<div style="float:right;">
-			<%@include file="../board/nav.jsp"%>
-		</div>
 		<header>
 			<h1>사업계획서 작성</h1>
 		</header>

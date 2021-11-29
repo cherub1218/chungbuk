@@ -31,13 +31,13 @@ public class MemberController {
 	@Inject
 	BCryptPasswordEncoder pwdEncoder;
 	
-	// �쉶�썝媛��엯 get
+	// 占쎌돳占쎌뜚揶쏉옙占쎌뿯 get
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public void getRegister() throws Exception {
 		logger.info("get register");
 	}
 	
-	// �쉶�썝媛��엯 post
+	// 占쎌돳占쎌뜚揶쏉옙占쎌뿯 post
 	@RequestMapping(value = "/postregister", method = RequestMethod.POST)
 	public String postRegister(MemberVO vo )throws Exception {
 		logger.info("post register");
@@ -57,7 +57,7 @@ public class MemberController {
 				return "redirect:/";
 	}
 	
-	// 濡쒓렇�씤 post
+	// 嚥≪뮄�젃占쎌뵥 post
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(MemberVO vo, HttpSession session, RedirectAttributes rttr) throws Exception{
 		logger.info("post login");
@@ -80,7 +80,7 @@ public class MemberController {
 	}
 	
 	
-	// 濡쒓렇�븘�썐 post
+	// 嚥≪뮄�젃占쎈툡占쎌뜍 post
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) throws Exception{
 		
@@ -103,7 +103,7 @@ public class MemberController {
 		return "cmm/memberDetailView";
 	}
 	
-	// �쉶�썝�젙蹂� �닔�젙  post
+	// 占쎌돳占쎌뜚占쎌젟癰귨옙 占쎈땾占쎌젟  post
 	@RequestMapping(value="/memberUpdate", method = RequestMethod.POST)
 	public String registerUpdate(MemberVO vo, HttpSession session) throws Exception{
 		
@@ -130,9 +130,23 @@ public class MemberController {
 			return "redirect:/";
 		}
 	}
+
+	@RequestMapping(value="/memberDelYN", method = RequestMethod.GET)
+	public String updateMemberDelYN(MemberVO vo, @RequestParam(value = "del_yn") String del_yn, @RequestParam(value = "member_idx") int member_idx) throws Exception{
+		
+		if ("Y".equals(del_yn)) {
+			vo.setDel_yn("N");
+		} else {
+			vo.setDel_yn("Y");
+		}
+		vo.setMember_idx(member_idx);
+		service.memberDelYN(vo);
+		
+		return "redirect:/cmm/admin";
+	}
 	
 	
-	//회원삭제
+	//�쉶�썝�궘�젣
 	@RequestMapping(value="/memberDelete", method = RequestMethod.POST)
 	public String memberDelete(MemberVO vo, @RequestParam(value = "member_idx") int member_idx ) throws Exception{
 		vo.setMember_idx(member_idx);
@@ -173,11 +187,11 @@ public class MemberController {
 		return "cmm/agreement";
 	}
 	
-    // 회원 관리 회원 목록
+    // �쉶�썝 愿�由� �쉶�썝 紐⑸줉
     // url pattern mapping
     @RequestMapping("/admin")
     public String memberMngList(MemberVO vo, Model model) throws Exception{
-    // controller => service => dao 요청
+    // controller => service => dao �슂泥�
         model.addAttribute("memberList",service.memberMngList());
         
         return "cmm/admin";

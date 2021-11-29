@@ -102,9 +102,6 @@
 <body>
 
 	<div class="container" id="root">
-		<div style="float:right;">
-			<%@include file="../board/nav.jsp"%>
-		</div>
 		<header>
 			<h1>사업계획서 접수</h1>
 		</header>

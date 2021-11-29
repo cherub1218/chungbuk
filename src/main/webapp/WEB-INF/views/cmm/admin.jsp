@@ -147,7 +147,7 @@ function fn_fileDownload(fileidx){
                                     <tbody>
 	                            			<c:forEach items="${memberList}" var="memberList" varStatus="status">
 												<tr>
-													<td><a href="<c:url value="/cmm/memberDetailView"/>?member_idx=${memberList.member_idx}">${memberList.user_id}</td>
+													<td><a href="<c:url value="/cmm/memberDetailView"/>?member_idx=${memberList.member_idx}">${memberList.user_id}</a></td>
 													<td>${memberList.user_name}</td>
 													<c:choose>
 									                   	<c:when test="${memberList.user_auth == 0}">
@@ -161,10 +161,10 @@ function fn_fileDownload(fileidx){
 									                   	</c:when>
 									           	 </c:choose>
 													<c:if test="${memberList.del_yn == 'N'}">
-														<td>사용</td>
+														<td><a href="<c:url value="/cmm/memberDelYN"/>?del_yn=N&member_idx=${memberList.member_idx}">사용</a></td>
 													</c:if>
 													<c:if test="${memberList.del_yn == 'Y'}">
-														<td>미사용</td>
+														<td><a href="<c:url value="/cmm/memberDelYN"/>?del_yn=Y&member_idx=${memberList.member_idx}">미사용</a></td>
 													</c:if>
 												</tr>
 											</c:forEach>

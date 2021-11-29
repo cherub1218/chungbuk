@@ -44,63 +44,57 @@ $(document).ready(function(){
 	})
 	var memberInfo = new Array();
 	fn_addFile();
-	$('input[type=checkbox]').click(function(){
 			
+	// 체크된 체크박스 값을 가져온다
+	$('#check_Btn').click(function(){
 		var rowData = new Array();
 		var memberArr = new Array();
 		var arrId = new Array();
 		var arrName= new Array();
 		var checkbox = $("input[name=checkedUserId]:checked");
-		// 체크된 체크박스 값을 가져온다
+		$('#evaluatorList').empty();
+		
+		checkbox.each(function(i) {
 			
+			// checkbox.parent() : checkbox의 부모는 <td>이다.
+			// checkbox.parent().parent() : <td>의 부모이므로 <tr>이다.
+			var tr = checkbox.parent().parent().eq(i);
+			var td = tr.children();
 			
-			$('#check_Btn').click(function(){
-				checkbox.each(function(i) {
-					 arrId = new Array();
-					 arrName= new Array();
-					 memberArr = new Array();
-					
-					
-					// checkbox.parent() : checkbox의 부모는 <td>이다.
-					// checkbox.parent().parent() : <td>의 부모이므로 <tr>이다.
-					var tr = checkbox.parent().parent().eq(i);
-					var td = tr.children();
-					
-					// 체크된 row의 모든 값을 배열에 담는다.
-					rowData.push(tr.text());
-					
-					// td.eq(0)은 체크박스 이므로  td.eq(1)의 값부터 가져온다.
-					var user_id = td.eq(2).text()+"";
-					var user_name= td.eq(1).text()+"";
-					
-					// 가져온 값을 배열에 담는다.
+			// 체크된 row의 모든 값을 배열에 담는다.
+			rowData.push(tr.text());
+			
+			// td.eq(0)은 체크박스 이므로  td.eq(1)의 값부터 가져온다.
+			var user_id = td.eq(2).text()+"";
+			var user_name= td.eq(1).text()+"";
+			
+			// 가져온 값을 배열에 담는다.
 
-					memberArr.push(user_id); 
-					arrId.push(user_id);
-					arrName.push(user_name);
-				});
-				
-				$.each(memberArr, function(index,item){
-					$('#evaluatorList').append("<div class='box'><div class='evalrator'>"+memberArr[index]+'</div>'+"<button class='filedel'type='button' style='float:right;' id='evalDelBtn'>"+"삭제"+"</button></div>");
-				});
-				
-				if(arrId.length > 1){
-				$.each(arrId, function(index,item){
-					$('#evaluatorList').append("<input type='hidden' name='anc_member_id' value='"+arrId[index]+"'>");
-				});
-				}else
-					$('#evaluatorList').append("<input type='hidden' name='anc_member_id' value='"+arrId[0]+"'>");
-				
-				if(arrId.length > 1){
-				$.each(arrName, function(index,item){
-					$('#evaluatorList').append("<input type='hidden'name='anc_member_name' value='"+arrName[index]+"'>") ;
-				});
-				}else
-					$('#evaluatorList').append("<input type='hidden' name='anc_member_name' value='"+arrName[0]+"'>") ;
-				close_pop();
-			})
-			
+			memberArr.push(user_id); 
+			arrId.push(user_id);
+			arrName.push(user_name);
+		});
+		
+		$.each(memberArr, function(index,item){
+			$('#evaluatorList').append("<div class='box'><div class='evalrator'>"+arrName[index]+'</div>'+"</div>");
+		});
+		
+		if(arrId.length > 1){
+		$.each(arrId, function(index,item){
+			$('#evaluatorList').append("<input type='hidden' name='anc_member_id' value='"+arrId[index]+"'>");
+		});
+		}else
+			$('#evaluatorList').append("<input type='hidden' name='anc_member_id' value='"+arrId[0]+"'>");
+		
+		if(arrId.length > 1){
+		$.each(arrName, function(index,item){
+			$('#evaluatorList').append("<input type='hidden'name='anc_member_name' value='"+arrName[index]+"'>") ;
+		});
+		}else
+			$('#evaluatorList').append("<input type='hidden' name='anc_member_name' value='"+arrName[0]+"'>") ;
+		close_pop();
 	})
+			
 	 //<div id='del_idx"+index+"'>
 	/* var formdata = $('#writeForm')[0]; */
 
@@ -129,10 +123,10 @@ $(document).ready(function(){
 	/* var formdata = $('#writeForm')[0]; */
 });
 
-function open_pop(flag){
+function open_pop(){
 	$('#selectEvaluator').show();
 };
-function close_pop(flag) {
+function close_pop() {
     $('#selectEvaluator').hide();
     
 };
@@ -146,11 +140,6 @@ function fn_addFile(){
 	$(document).on("click","#fileDelBtn", function(){
 		$(this).parent().remove();
 	});
-	
-	$(document).on("click","#evalDelBtn", function(){
-		$(this).parent().remove();
-	});
-	
 	
 }
 </script>
@@ -263,10 +252,10 @@ function fn_addFile(){
                                         <th scope="row"><span>* </span>평가원선택</th>
                                         <td>
                                         	<div class="box">
-	                                            <button class="select_Evaluator" type="button" onClick="open_pop();">평가원선택</button></div>
-	                                            <div id="evaluatorList">
-	                                            </div>
-                                            
+	                                            <button class="select_Evaluator" type="button" onClick="open_pop();">평가원선택</button>
+											</div>
+                                            <div id="evaluatorList">
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>

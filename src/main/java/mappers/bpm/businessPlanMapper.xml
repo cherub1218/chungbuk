@@ -157,7 +157,7 @@
 	<update id="updateFile" parameterType="hashMap">
 		UPDATE EMP_FILE SET
 		DEL_YN = 'Y'
-		WHERE FILE_NO = #{file_idx}
+		WHERE FILE_IDX = #{FILE_IDX}
 	</update>  
    
     <select id="businessPlanApplyMyList" resultType="emp.bpm.vo.BusinessPlanVO" parameterType="hashMap">

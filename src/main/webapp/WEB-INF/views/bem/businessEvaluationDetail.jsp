@@ -209,7 +209,7 @@
                                     <tbody>
                                         <tr>
                                             <th>평가의견</th>
-                                            <td colspan="3" class="opi ta_c f_bold">
+                                            <td colspan="3" class="opi1 f_bold">
                                                ${read.eval_opinion}
                                             </td>
                                         </tr>

@@ -150,22 +150,19 @@ function fn_fileDownload(fileidx){
 					</ul>
 					<div class="p_15">
 						<div class="tabcontent current" id="tab1">
-							<h2>연구목표</h2>
-							<textarea name="" id="" cols="30" rows="10" readonly="readonly">
-									${read.title_remark1}
-							</textarea>
+							<h2>${form.BPLAN_FORM_TITLE1}</h2>
+							<textarea name="" id="" cols="30" rows="10" readonly="readonly">${read.title_remark1}</textarea>
 						</div><!--//#tab1-->
 						<div class="tabcontent" id="tab2">
-						<textarea name="" id="" cols="30" rows="10" readonly="readonly">
-									${read.title_remark2}
-							</textarea>
+							<h2>${form.BPLAN_FORM_TITLE2}</h2>
+						<textarea name="" id="" cols="30" rows="10" readonly="readonly">${read.title_remark2}</textarea>
 						</div><!--//#tab1-->
 						<div class="tabcontent" id="tab3">
-						<textarea name="" id="" cols="30" rows="10" readonly="readonly">
-									${read.title_remark3}
-							</textarea>
+							<h2>${form.BPLAN_FORM_TITLE3}</h2>
+						<textarea name="" id="" cols="30" rows="10" readonly="readonly">${read.title_remark3}</textarea>
 						</div><!--//#tab1-->
 						<div class="tabcontent" id="tab4">
+							<h2>${form.BPLAN_FORM_TITLE4}</h2>
 						<div class="tablebox">
 							<!-- <textarea name="title_remark4" id="" cols="30" rows="10"> -->
 							 <table class="thead_gray">

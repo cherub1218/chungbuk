@@ -46,13 +46,13 @@ $(document).ready(function(){
 	fn_addFile();
 			
 	// 체크된 체크박스 값을 가져온다
-	$('#check_Btn').click(function(){
+	$('#check_Btn1').click(function(){
 		var rowData = new Array();
 		var memberArr = new Array();
 		var arrId = new Array();
 		var arrName= new Array();
-		var checkbox = $("input[name=checkedUserId]:checked");
-		$('#evaluatorList').empty();
+		var checkbox = $("input[name=checkedAdminId]:checked");
+		$('#evaluatorList1').empty();
 		
 		checkbox.each(function(i) {
 			
@@ -76,60 +76,89 @@ $(document).ready(function(){
 		});
 		
 		$.each(memberArr, function(index,item){
-			$('#evaluatorList').append("<div class='box'><div class='evalrator'>"+arrName[index]+'</div>'+"</div>");
+			$('#evaluatorList1').append("<div class='box'><div class='evalrator1'>"+arrName[index]+'</div>'+"</div>");
 		});
 		
 		if(arrId.length > 1){
 		$.each(arrId, function(index,item){
-			$('#evaluatorList').append("<input type='hidden' name='anc_member_id' value='"+arrId[index]+"'>");
+			$('#evaluatorList1').append("<input type='hidden' name='admin_member_id' value='"+arrId[index]+"'>");
 		});
 		}else
-			$('#evaluatorList').append("<input type='hidden' name='anc_member_id' value='"+arrId[0]+"'>");
+			$('#evaluatorList1').append("<input type='hidden' name='admin_member_id' value='"+arrId[0]+"'>");
 		
 		if(arrId.length > 1){
 		$.each(arrName, function(index,item){
-			$('#evaluatorList').append("<input type='hidden'name='anc_member_name' value='"+arrName[index]+"'>") ;
+			$('#evaluatorList1').append("<input type='hidden'name='admin_member_name' value='"+arrName[index]+"'>") ;
 		});
 		}else
-			$('#evaluatorList').append("<input type='hidden' name='anc_member_name' value='"+arrName[0]+"'>") ;
-		close_pop();
+			$('#evaluatorList1').append("<input type='hidden' name='admin_member_name' value='"+arrName[0]+"'>") ;
+		close_pop1();
 	})
-			
-	 //<div id='del_idx"+index+"'>
-	/* var formdata = $('#writeForm')[0]; */
 
-				
-				/* $.each(memberArr, function(index,item){
-					$('#evaluatorList').append("<div class='evalrator"+index+"'><div class='evalrator'>"+memberArr[index]+'</div>'+"<button class='filedel'type='button' style='float:right;' id='evalDelBtn'>"+"삭제"+"</button></div>");
-				});
-				 if(arrId.length > 1){ 
-				$.each(arrId, function(index,item){
-					alert(index) 
-					$('.evalrator'+arrId[index]+'').append("<input type='hidden' name='anc_member_id' value='"+arrId[index]+"'>");
-				});
-				 }else
-					$('.evalrator0').append("<input type='hidden' name='anc_member_id' value='"+arrId[0]+"'>"); 
-				 if(arrId.length > 1){ 
-				$.each(arrName, function(index,item){
-					$('.evalrator'+arrName[index]+'').append("<input type='hidden'name='anc_member_name' value='"+arrName[index]+"'>") ;
-				});
-				
-				}else
-					$('.evalrator0').append("<input type='hidden' name='anc_member_name' value='"+arrName[0]+"'>") ;
-				close_pop();
-			}) ))*/
+	$('#check_Btn2').click(function(){
+		var rowData = new Array();
+		var memberArr = new Array();
+		var arrId = new Array();
+		var arrName= new Array();
+		var checkbox = $("input[name=checkedUserId]:checked");
+		$('#evaluatorList2').empty();
+		
+		checkbox.each(function(i) {
+			
+			// checkbox.parent() : checkbox의 부모는 <td>이다.
+			// checkbox.parent().parent() : <td>의 부모이므로 <tr>이다.
+			var tr = checkbox.parent().parent().eq(i);
+			var td = tr.children();
+			
+			// 체크된 row의 모든 값을 배열에 담는다.
+			rowData.push(tr.text());
+			
+			// td.eq(0)은 체크박스 이므로  td.eq(1)의 값부터 가져온다.
+			var user_id = td.eq(2).text()+"";
+			var user_name= td.eq(1).text()+"";
+			
+			// 가져온 값을 배열에 담는다.
+
+			memberArr.push(user_id); 
+			arrId.push(user_id);
+			arrName.push(user_name);
+		});
+		
+		$.each(memberArr, function(index,item){
+			$('#evaluatorList2').append("<div class='box'><div class='evalrator2'>"+arrName[index]+'</div>'+"</div>");
+		});
+		
+		if(arrId.length > 1){
+		$.each(arrId, function(index,item){
+			$('#evaluatorList2').append("<input type='hidden' name='anc_member_id' value='"+arrId[index]+"'>");
+		});
+		}else
+			$('#evaluatorList2').append("<input type='hidden' name='anc_member_id' value='"+arrId[0]+"'>");
+		
+		if(arrId.length > 1){
+		$.each(arrName, function(index,item){
+			$('#evaluatorList2').append("<input type='hidden'name='anc_member_name' value='"+arrName[index]+"'>") ;
+		});
+		}else
+			$('#evaluatorList2').append("<input type='hidden' name='anc_member_name' value='"+arrName[0]+"'>") ;
+		close_pop2();
+	})
 	
-	 //<div id='del_idx"+index+"'>
-	/* var formdata = $('#writeForm')[0]; */
 });
 
-function open_pop(){
-	$('#selectEvaluator').show();
+function open_pop1(){
+	$('#selectEvaluator1').show();
 };
-function close_pop() {
-    $('#selectEvaluator').hide();
-    
+function open_pop2(){
+	$('#selectEvaluator2').show();
 };
+function close_pop1() {
+    $('#selectEvaluator1').hide();
+};
+function close_pop2() {
+    $('#selectEvaluator2').hide();
+};
+
 function fn_addFile(){
 	var fileIndex = 1;
 	//$("#fileIndex").append("<div><input type='file' style='float:left;' name='file_"+(fileIndex++)+"'>"+"<button type='button' style='float:right;' id='fileAddBtn'>"+"추가"+"</button></div>");
@@ -249,12 +278,22 @@ function fn_addFile(){
                                         </td>
                                     </tr>
                                      <tr>
+                                        <th scope="row"><span>* </span>평가위원장 선택</th>
+                                        <td>
+                                        	<div class="box">
+	                                            <button class="select_Evaluator" type="button" onClick="open_pop1();">위원장선택</button>
+											</div>
+                                            <div id="evaluatorList1">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                     <tr>
                                         <th scope="row"><span>* </span>평가원선택</th>
                                         <td>
                                         	<div class="box">
-	                                            <button class="select_Evaluator" type="button" onClick="open_pop();">평가원선택</button>
+	                                            <button class="select_Evaluator" type="button" onClick="open_pop2();">평가원선택</button>
 											</div>
-                                            <div id="evaluatorList">
+                                            <div id="evaluatorList2">
                                             </div>
                                         </td>
                                     </tr>
@@ -307,49 +346,88 @@ function fn_addFile(){
             	</section>
         	</div>
         </div>
-        <div id="selectEvaluator" class="modal">
+        <div id="selectEvaluator1" class="modal">
               <!-- Modal content -->
-      <div class="modal-content">
-                <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt; margin-bottom: 10px;">평가원 선택</span></b></span></p>
-               	<table class="table table-hover">
-						<thead>
-							<tr>
-								<th style="width: 60px; text-align: center;">선택</th>
-								<th style="width: 60px; text-align: center;">평가원 성명</th>
-								<th style="width: 60px; text-align: center;">아이디</th>
-							</tr>
-						</thead>
-							<tr>
-								<td style="text-align: center;"><input type="checkbox" name="checkedUserId"/></td>
-								<td style="text-align: center;"id="user_name"><c:out value="선택안함" /></td>
-								<td style="text-align: center;"id="user_id"><c:out value="선택안함" /> </td>
-							</tr>
-						<c:forEach items="${memberList}" var = "memberList">
-							<tr>
-								<td style="text-align: center;"><input type="checkbox" name="checkedUserId"/></td>
-								<td style="text-align: center;"id="user_name"><c:out value="${memberList.user_name}" /></td>
-								<td style="text-align: center;"id="user_id"><c:out value="${memberList.user_id}" /> </td>
-							</tr>
-						</c:forEach>
-					</table>
+			<div class="modal-content">
+				<p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt; margin-bottom: 10px;">위원장 선택</span></b></span></p>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th style="width: 60px; text-align: center;">선택</th>
+							<th style="width: 60px; text-align: center;">위원장 성명</th>
+							<th style="width: 60px; text-align: center;">아이디</th>
+						</tr>
+					</thead>
+						<tr>
+							<td style="text-align: center;"><input type="checkbox" name="checkedAdminId"/></td>
+							<td style="text-align: center;"id="user_name"><c:out value="선택안함" /></td>
+							<td style="text-align: center;"id="user_id"><c:out value="선택안함" /> </td>
+						</tr>
+					<c:forEach items="${memberList}" var = "memberList">
+						<tr>
+							<td style="text-align: center;"><input type="checkbox" name="checkedAdminId"/></td>
+							<td style="text-align: center;"id="user_name"><c:out value="${memberList.user_name}" /></td>
+							<td style="text-align: center;"id="user_id"><c:out value="${memberList.user_id}" /> </td>
+						</tr>
+					</c:forEach>
+				</table>
                 
-             <div>
-		            <div style="float:left; color:#000; width: 48%; pointer;background-color:#e6e6e6;text-align: center;padding-bottom: 10px;padding-top: 10px; margin-right: 10px;" onClick="close_pop();">
+				<div>
+		            <div style="float:left; color:#000; width: 48%; pointer;background-color:#e6e6e6;text-align: center;padding-bottom: 10px;padding-top: 10px; margin-right: 10px;" onClick="close_pop1();">
 		                <span class="pop_bt" style="font-size: 13pt;" >
 		                   	 취소
 		                </span>
 		            </div>
 		            
-					<div id="check_Btn" style="float:left; color:#FFFFFF; width: 48%; pointer;background-color:#952940;text-align: center;padding-bottom: 10px;padding-top: 10px;">
+					<div id="check_Btn1" style="float:left; color:#FFFFFF; width: 48%; pointer;background-color:#952940;text-align: center;padding-bottom: 10px;padding-top: 10px;">
 		                <span class="pop_bt" style="font-size: 13pt;" >
 		                   	 확인
 		                </span>
 		            </div>		            
-			</div>
-   
- 	
-    </div>
-    </div>
+				</div>
+    		</div>
+		</div>
+        <div id="selectEvaluator2" class="modal">
+              <!-- Modal content -->
+			<div class="modal-content">
+				<p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt; margin-bottom: 10px;">평가원 선택</span></b></span></p>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th style="width: 60px; text-align: center;">선택</th>
+							<th style="width: 60px; text-align: center;">평가원 성명</th>
+							<th style="width: 60px; text-align: center;">아이디</th>
+						</tr>
+					</thead>
+						<tr>
+							<td style="text-align: center;"><input type="checkbox" name="checkedUserId"/></td>
+							<td style="text-align: center;"id="user_name"><c:out value="선택안함" /></td>
+							<td style="text-align: center;"id="user_id"><c:out value="선택안함" /> </td>
+						</tr>
+					<c:forEach items="${memberList}" var = "memberList">
+						<tr>
+							<td style="text-align: center;"><input type="checkbox" name="checkedUserId"/></td>
+							<td style="text-align: center;"id="user_name"><c:out value="${memberList.user_name}" /></td>
+							<td style="text-align: center;"id="user_id"><c:out value="${memberList.user_id}" /> </td>
+						</tr>
+					</c:forEach>
+				</table>
+                
+				<div>
+		            <div style="float:left; color:#000; width: 48%; pointer;background-color:#e6e6e6;text-align: center;padding-bottom: 10px;padding-top: 10px; margin-right: 10px;" onClick="close_pop2();">
+		                <span class="pop_bt" style="font-size: 13pt;" >
+		                   	 취소
+		                </span>
+		            </div>
+		            
+					<div id="check_Btn2" style="float:left; color:#FFFFFF; width: 48%; pointer;background-color:#952940;text-align: center;padding-bottom: 10px;padding-top: 10px;">
+		                <span class="pop_bt" style="font-size: 13pt;" >
+		                   	 확인
+		                </span>
+		            </div>		            
+				</div>
+    		</div>
+		</div>
         <!--End Modal-->
         <footer></footer>
         <script>

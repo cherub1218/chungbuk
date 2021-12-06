@@ -77,11 +77,9 @@ $(document).ready(function(){
   }); 
         
 	  $('#write_btn').click(function(){
-			
 	  	 
 		   var form = $("form")[0];        
 	       var formData = new FormData(form);
-		   
 		 
 		  $.ajax({
 				type: "POST",
@@ -91,9 +89,7 @@ $(document).ready(function(){
 				processData: false,
 	            contentType: false,
 				success : function(data) {
-									
 					window.location.replace('<c:url value="/bpm/businessPlanApplyMyList"/>')	
-
 				},
 				error : function(request, status, error){
 					alert("공백이 들어있습니다. 비용이 없으실 경우 0을 입력해주세요.")
@@ -121,10 +117,24 @@ function fn_addFile(){
 	
 	function fn_del(value, name){
 		
-		fileNoArry.push(value);
-		fileNameArry.push(name);
-		$("#fileNoDel").attr("value", fileNoArry);
-		$("#fileNameDel").attr("value", fileNameArry);
+		var form = $("form")[0];        
+		var formData = new FormData(form);
+		
+		$.ajax({
+			type: "POST",
+			url : '<c:url value="/bpm/businessPlanApplyUpdate"/>',
+			dataType :"text",
+			data: formData,
+			processData: false,
+            contentType: false,
+			success : function(data) {
+				var div = document.getElementById(value);
+				div.remove();
+			},
+			error : function(request, status, error){
+				alert("파일삭제 실패.");
+			}
+		});
 	}
 	
 	
@@ -368,11 +378,11 @@ function fn_addFile(){
 									<c:forEach var="file" items="${file}" varStatus="var">
 										<input type="hidden" id="FILE_NO" name="FILE_NO_${var.index}" value="${file.FILE_IDX}">
 										<input type="hidden" id="FILE_NAME" name="FILE_NAME" value="FILE_NO_${var.index}">
-										<div><span>첨부파일 : </span>${file.FILE_FNAME}(${file.FILE_SIZE}kb)
+										<div id="${file.FILE_IDX}"><span>첨부파일 : </span>${file.FILE_FNAME}(${file.FILE_SIZE}kb)
 										<!-- <button type='button'style="margin-left: 80%" id='fileDelBtn'>삭제</button></div>  -->
 										<button id="fileDel" onclick="fn_del('${file.FILE_IDX}','FILE_NO_${var.index}');" type="button">삭제</button><br>
+										</div>
 									</c:forEach>
-								</div>
 								</ul>
 							</div>
 						</div>

@@ -44,16 +44,6 @@
  	}
  	
  	$(document).ready(function(){
- 		  	
- 		$("#eval_score1").val(${read.eval_score1})
- 		$("#eval_score2").val(${read.eval_score2})
- 		$("#eval_score3").val(${read.eval_score3})
- 		$("#eval_score4").val(${read.eval_score4})
- 		$("#eval_score5").val(${read.eval_score5})
- 		$("#eval_score6").val(${read.eval_score6})
- 		$("#eval_score7").val(${read.eval_score7})
- 		$("#eval_score8").val(${read.eval_score8})
-
  		
  		 $('.eval_score').on('keyup',function(){
  			var Sum = 0;
@@ -219,7 +209,7 @@
 	                                            <td class="type">${ancInfo.EVAL_FORM_TITLE}</td>
 	                                            <td >${ancInfo.EVAL_FORM_ITEM}</td>
 	                                            <td class="score" >${ancInfo.EVAL_FORM_SCORE}</td>
-	                                            <td><input class="eval_score"  id="eval_score${status.index+1}" type="number" name="eval_score${status.index+1}" value=""></td>   
+	                                            <td><input class="eval_score"  id="eval_score${status.index+1}" type="number" min="0" max="${ancInfo.EVAL_FORM_SCORE}" required name="eval_score${status.index+1}" value=""></td>   
                                         
                                         	</tr>
                                         </c:forEach>	
@@ -240,8 +230,8 @@
                                     <tbody>
                                         <tr>
                                             <th>평가의견</th>
-                                            <td colspan="3" class="opi ta_c f_bold">
-                                           <div class="opi">
+                                            <td colspan="3" class="opi1 f_bold">
+                                           <div class="opi1">
                                               	<textarea name="eval_opinion">${read.eval_opinion}</textarea> 
                                            </div>
                                             </td>
@@ -259,7 +249,7 @@
                             </div>
                 			            
                                 <div class="btn_wrap text-right same mt_20 justify-between">
-                                <button type="button" class="normal" style="float: left;" onclick='location.href="<c:url value="/bem/businessEvaluationDetail"/>?bem_beval_idx=${param.bem_beval_idx}&bpm_bplan_idx=${param.bpm_bplan_idx}&bam_anc_idx=${param.bam_anc_idx}"'>취소</button>
+                                <button type="button" class="normal" style="float:left;" onclick='location.href="<c:url value="/bem/businessEvaluationDetail"/>?bem_beval_idx=${param.bem_beval_idx}&bpm_bplan_idx=${param.bpm_bplan_idx}&bam_anc_idx=${param.bam_anc_idx}"'>취소</button>
                                 <button type="submit" class="normal" > 수정</button>
                                 <button type="button" class="normal"  onclick="printFn()">인쇄</button>
                             </div>

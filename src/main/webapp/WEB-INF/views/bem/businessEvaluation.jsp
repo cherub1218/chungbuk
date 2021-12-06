@@ -206,7 +206,7 @@
 	                                            <td class="type">${ancInfo.EVAL_FORM_TITLE}</td>
 	                                            <td >${ancInfo.EVAL_FORM_ITEM}</td>
 	                                            <td style="text-align: center;" class="point" >${ancInfo.EVAL_FORM_SCORE}</td>
-	                                            <td><input class="score"id="eval_score" type="number" name="eval_score${status.index+1}" value="0"></td>   
+	                                            <td><input class="score"id="eval_score" type="number" min="0" max="${ancInfo.EVAL_FORM_SCORE}" required name="eval_score${status.index+1}" value="0"></td>   
                                        </tr>
                                         </c:forEach>	
                                     	</tbody>
@@ -225,7 +225,7 @@
                                         <tr>
                                             <th>평가의견</th>
                                             <td colspan="3">
-                                                <div class="opi">
+                                                <div class="opi1">
                                                     <textarea name="eval_opinion" id="" cols="30" rows="10"></textarea>
                                                 </div>
                                             </td>

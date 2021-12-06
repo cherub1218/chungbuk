@@ -84,35 +84,35 @@ $(document).ready(function(){
                     	<input type="hidden" name="Sbam_anc_idx" value="${param.bam_anc_idx}">
 						<ul class="tab d-flex">
 							<li data-tab="tab1" class="on"><a href="javascript:void(0)"><input type="text" id="bplan_form_title1" name="bplan_form_title1" placeholder="항목명 입력 ex)연구목표" value=""></a></li>
-							<li data-tab="tab2" class=""><a href="javascript:void(0)"><input type="text" id="bplan_form_title2" name="bplan_form_title2" placeholder="항목명 입력 " value=""></a></li>
-							<li data-tab="tab3" class=""><a href="javascript:void(0)"><input type="text" id="bplan_form_title3" name="bplan_form_title3" placeholder="항목명 입력"value=""></a></li>
-							<li data-tab="tab4" ><a href="javascript:void(0)"><input type="text" id="bplan_form_title4" name="bplan_form_title4" value="연구개발비"></a></li>
+							<li data-tab="tab2" class=""><a href="javascript:void(0)"><input type="text" id="bplan_form_title2" name="bplan_form_title2" placeholder="항목명 입력 ex)연구내용" value=""></a></li>
+							<li data-tab="tab3" class=""><a href="javascript:void(0)"><input type="text" id="bplan_form_title3" name="bplan_form_title3" placeholder="항목명 입력 ex)기대효과"value=""></a></li>
+							<li data-tab="tab4" ><a href="javascript:void(0)"><input type="text" id="bplan_form_title4" name="bplan_form_title4" placeholder="항목명 입력 ex)연구 개발비"value=""></a></li>
 						</ul>
 					</form>
 					<div class="p_15">
 						<div class="tabcontent current" id="tab1">
 							<h2 id="title1">연구목표</h2>
 							<div class="btn_wrap text-right">
-							<!-- 	<button type="button" class="normal">작성</button> -->
+								<button type="button" class="normal" id="title1Bnt">작성</button>
 							</div>
 						</div><!--//#tab1-->
 						<div class="tabcontent" id="tab2">
 							<h2 id="title2">연구내용</h2>
 								<div class="btn_wrap text-right">
-									<!-- <button type="button" class="normal">작성</button> -->
+									<button type="button" class="normal" id="title2Bnt">작성</button>
 								</div>
 						</div><!--//#tab2-->
 						<div class="tabcontent" id="tab3">
 							<h2 id="title3">기대효과</h2>
 								<div class="btn_wrap text-right">
-									<!-- <button type="button" class="normal">작성</button> -->
+									<button type="button" class="normal" id="title3Bnt">작성</button>
 								</div>
 						</div><!--//#tab3-->
 						<div class="tabcontent" id="tab4">
-							<h2 id="title3">연구 개발비</h2>
+							<h2 id="title4">연구 개발비</h2>
 
 								<div class="btn_wrap text-right">
-									<button id="writeBtn" type="button" class="normal">작성</button>
+									<button type="button" class="normal" id="title4Bnt">작성</button>
 								</div>
 						</div><!--//#tab4-->
 					</div>

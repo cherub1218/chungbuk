@@ -112,10 +112,15 @@ function fn_addFile(){
 	
 }
 
-	var fileNoArry = new Array();
-	var fileNameArry = new Array();
 	
 	function fn_del(value, name){
+		var fileNoArry = new Array();
+		var fileNameArry = new Array();
+		
+		fileNoArry.push(value);
+		fileNameArry.push(name);
+		$("#fileNoDel").attr("value", fileNoArry);
+		$("#fileNameDel").attr("value", fileNameArry);
 		
 		var form = $("form")[0];        
 		var formData = new FormData(form);

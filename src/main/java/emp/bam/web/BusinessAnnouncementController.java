@@ -125,8 +125,8 @@ public class BusinessAnnouncementController {
 	@RequestMapping(value = "/businessAnnouncementUpdateProc", method = RequestMethod.POST)
 	public String update(BusinessAnnouncementVO businessAnnouncementVO,
 			@ModelAttribute("scri") SearchCriteria scri, RedirectAttributes rttr,
-			@RequestParam(value="fileNoDel[]", required=false) String[] files,
-			@RequestParam(value="fileNameDel[]", required=false) String[] fileNames,
+			@RequestParam(value="fileNoDel[]") String[] files,
+			@RequestParam(value="fileNameDel[]") String[] fileNames,
 			MultipartHttpServletRequest mpRequest) throws Exception {
 		logger.info("update");
 		

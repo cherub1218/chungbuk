@@ -17,7 +17,7 @@ import emp.bam.vo.BusinessAnnouncementVO;
 @Component("bamfileUtils")
 public class FileUtils {
 	
-	private static final String filePath = "/home/ubuntu/mp/file/"; // 파일이 저장될 위치
+	private static final String filePath = "/home/ubuntu/mp/file/"; // �뙆�씪�씠 ���옣�맆 �쐞移�
 	
 	public List<Map<String, Object>> parseInsertFileInfo(BusinessAnnouncementVO BusinessAnnouncementVO, 
 			MultipartHttpServletRequest mpRequest) throws Exception{
@@ -93,7 +93,7 @@ public class FileUtils {
 			for(int i = 0; i<fileNames.length; i++) {
 					listMap = new HashMap<String,Object>();
                     listMap.put("IS_NEW", "N");
-					listMap.put("FILE_NO", files[i]); 
+					listMap.put("FILE_IDX", files[i]); 
 					list.add(listMap); 
 			}
 		}

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -49,10 +50,50 @@ $(document).ready(function(){
 		
 	})
 	
-	$('#writeBtn').click(function(){
-		$('form').submit();
-	})
-})
+});
+
+function writeBtn(Sbam_anc_idx, value) {
+	if (value == '1') {
+		var title1 = document.getElementById('bplan_form_title1').value;
+		var title2 = "";
+		var title3 = "";
+		var title4 = "";
+	} else if (value == '2') {
+		var title1 = "";
+		var title2 = document.getElementById('bplan_form_title1').value;
+		var title3 = "";
+		var title4 = "";
+	} else if (value == '3') {
+		var title1 = "";
+		var title2 = "";
+		var title3 = document.getElementById('bplan_form_title1').value;
+		var title4 = "";
+	} else if (value == '4') {
+		var title1 = "";
+		var title2 = "";
+		var title3 = "";
+		var title4 = document.getElementById('bplan_form_title1').value;
+	}
+	
+	$.ajax({
+		type: "POST",
+		url : '<c:url value="/bam/businessPlanApplyEdit"/>',
+		dataType :"text",
+		data: {
+			Sbam_anc_idx: Sbam_anc_idx,
+			bplan_form_title1: title1,
+			bplan_form_title2: title2,
+			bplan_form_title3: title3,
+			bplan_form_title4: title4
+		},
+		success : function(data) {
+			location.replace("/bam/businessFormEditList")
+		},
+		error : function(request, status, error){
+			alert("파일삭제 실패.");
+		}
+	});
+}
 </script>
 <body>
     <div class="wrap">
@@ -93,26 +134,26 @@ $(document).ready(function(){
 						<div class="tabcontent current" id="tab1">
 							<h2 id="title1">연구목표</h2>
 							<div class="btn_wrap text-right">
-								<button type="button" class="normal" id="title1Bnt">작성</button>
+								<button type="button" class="normal" onclick="writeBtn('${param.bam_anc_idx}', '1');">작성</button>
 							</div>
 						</div><!--//#tab1-->
 						<div class="tabcontent" id="tab2">
 							<h2 id="title2">연구내용</h2>
 								<div class="btn_wrap text-right">
-									<button type="button" class="normal" id="title2Bnt">작성</button>
+									<button type="button" class="normal" onclick="writeBtn('${param.bam_anc_idx}', '2');">작성</button>
 								</div>
 						</div><!--//#tab2-->
 						<div class="tabcontent" id="tab3">
 							<h2 id="title3">기대효과</h2>
 								<div class="btn_wrap text-right">
-									<button type="button" class="normal" id="title3Bnt">작성</button>
+									<button type="button" class="normal" onclick="writeBtn('${param.bam_anc_idx}', '3');">작성</button>
 								</div>
 						</div><!--//#tab3-->
 						<div class="tabcontent" id="tab4">
 							<h2 id="title4">연구 개발비</h2>
 
 								<div class="btn_wrap text-right">
-									<button type="button" class="normal" id="title4Bnt">작성</button>
+									<button type="button" class="normal" onclick="writeBtn('${param.bam_anc_idx}', '4');">작성</button>
 								</div>
 						</div><!--//#tab4-->
 					</div>

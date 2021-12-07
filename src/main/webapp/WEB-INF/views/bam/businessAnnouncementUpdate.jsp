@@ -180,6 +180,35 @@ function fn_addFile(){
 	});
 	
 }
+
+function fn_del(value, name){
+	var fileNoArry = new Array();
+	var fileNameArry = new Array();
+	
+	fileNoArry.push(value);
+	fileNameArry.push(name);
+	$("#fileNoDel").attr("value", fileNoArry);
+	$("#fileNameDel").attr("value", fileNameArry);
+	
+	var form = $("form")[0];        
+	var formData = new FormData(form);
+	
+	$.ajax({
+		type: "POST",
+		url : '<c:url value="/bam/businessAnnouncementUpdateProc"/>',
+		dataType :"text",
+		data: formData,
+		processData: false,
+        contentType: false,
+		success : function(data) {
+			var div = document.getElementById(value);
+			div.remove();
+		},
+		error : function(request, status, error){
+			alert("파일삭제 실패.");
+		}
+	});
+}
 </script>
 <body>
     <div class="wrap">
@@ -326,24 +355,29 @@ function fn_addFile(){
 									<tr>
 										<th scope="row">첨부파일</th>
 										<td>
-                                        	<div class="btn_wrap">
+											<div id="fileIndex">	
 												<input type="file" id="input-file" style="display: none" />	
 												<button class="addFile" id="fileAdd_btn"  type="button">파일추가</button>
-												<div id="fileIndex">	
-												</div>
-												<c:forEach var="file" items="${file}">
-													<div class="file">
-														<a href="#" onclick="fn_fileDownload('${file.FILE_IDX}');">${file.FILE_FNAME}</a>(${file.FILE_SIZE}kb)<br>
-														<button class='filedel'type='button' style='float:right;' id='fileDelBtn'>삭제</button>
-													</div>
-												</c:forEach>
 											</div>
-                                            <!-- <input type="file" name="bf_file[]" id="bf_file_2" class="file-loadingz" style="padding-bottom:5px" data-show-preview="false" onchange="checkFile(this)"> -->
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</form>
+												<div class="filelist1 form-group file_hwp mb-0">
+													<ul>
+														<c:forEach var="file" items="${file}" varStatus="var">
+															<input type="hidden" id="FILE_NO" name="FILE_NO_${var.index}" value="${file.FILE_IDX}">
+															<input type="hidden" id="FILE_NAME" name="FILE_NAME" value="FILE_NO_${var.index}">
+															<div id="${file.FILE_IDX}" class="fileDelDiv">
+																<a href="#" onclick="fn_fileDownload('${file.FILE_IDX}');">${file.FILE_FNAME}</a>(${file.FILE_SIZE}kb)
+																<button class='filedel1' onclick="fn_del('${file.FILE_IDX}','FILE_NO_${var.index}');" type='button' style='float:right;' id='fileDelBtn'>삭제</button>
+															</div>
+														</c:forEach>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<input type="hidden" id="fileNoDel" name="fileNoDel[]" value=""> 
+								<input type="hidden" id="fileNameDel" name="fileNameDel[]" value=""> 
+							</form>
                         </div> 
                         
                         <div class="board_btn_wrap btn2 right">

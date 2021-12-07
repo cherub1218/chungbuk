@@ -84,6 +84,13 @@ ul.tab li.on::before{position:absolute; top:-1px; left:-1px; width:calc(100% + 2
 .filelist ul li{line-height:1.2rem;}
 .filelist ul li a{color:#127ec3;font-weight:600;}
 
+.filelist1{margin-top:50px; margin-bottom:20px;}
+.filelist1 p{margin-bottom:10px; font-weight: 600;}
+.filelist1 ul{padding:5px; border:1px solid #ddd;}
+.filelist1 ul li{line-height:1.2rem; font-weight:600;}
+.filelist1 ul li a{color:#127ec3;font-weight:600;}
+.fileDelDiv{height:30px; padding-top:5px;}
+
 .cont h3{    padding-left: 15px; font-size:20px; font-weight:bold;}
 
 .table_wrap{padding:0 15px;}

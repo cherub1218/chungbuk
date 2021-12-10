@@ -237,6 +237,15 @@ SELECT      FILE_IDX,
    
    </insert>
    
+	<select id="getBusinessAnnouncementMember" parameterType="int" resultType="list">
+		SELECT
+			ANC_MEMBER_ID
+		FROM 
+			EMP_BAM_ANC_MEMBER
+		WHERE 
+			BAM_ANC_IDX = #{bam_anc_idx}
+	</select>
+   
    <update id="businessAnnouncementOldUpdate" useGeneratedKeys="true" keyProperty="id">
    
    UPDATE EMP_BAM_ANC SET

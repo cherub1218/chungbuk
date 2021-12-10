@@ -30,7 +30,7 @@
 $(document).ready(function(){
 	
 	<c:forEach items="${evalList}" var="evalList">
-		$('#evaluatorList2').append("<tr><td class='evaltd'>"+"${evalList.anc_member_id}"+"</td><td>"+"${evalList.anc_member_name}"+"</td></tr>");
+		$('#evaluatorList2').append("<tr><td class='evaltd'>"+"${evalList.anc_member_name}"+"</td></tr>");
 	</c:forEach>
 	
 	$('#submit_Btn').click(function(){
@@ -133,7 +133,8 @@ $(document).ready(function(){
 		});
 		
 		$.each(memberArr, function(index,item){
-			$('#evaluatorList2').append("<div class='box'><div class='evalrator2'>"+arrName[index]+'</div>'+"</div>");
+			//$('#evaluatorList2').append("<div class='box'><div class='evalrator2'>"+arrName[index]+'</div>'+"</div>");
+			$('#evaluatorList2').append("<tr><td class='evaltd'>"+arrName[index]+"</td></tr>");
 		});
 		
 		if(arrId.length > 1){
@@ -158,6 +159,20 @@ function open_pop1(){
 	$('#selectEvaluator1').show();
 };
 function open_pop2(){
+		var row = document.getElementById("userPop").getElementsByTagName("tr");
+		
+		for (var cnt=0; cnt<row.length; cnt++) {
+			<c:forEach items="${evalList}" var="evalList">
+			var cells = row[cnt].getElementsByTagName("td");
+			var tdVal = cells[2].firstChild.data;
+			var id = "${evalList.anc_member_id}"
+
+			if (tdVal == id) {
+				document.getElementsByName('checkedUserId')[cnt].checked=true;
+			}
+			</c:forEach>
+		}
+	
 	$('#selectEvaluator2').show();
 };
 function close_pop1() {
@@ -323,7 +338,6 @@ function fn_del(value, name){
 	                                            <button class="select_Evaluator" type="button" onClick="open_pop2();">평가원선택</button></div>
 	                                          <table id="boardUpdate" style="width:70%; margin-left: auto; margin-right: auto;">
 	                                           <tr>
-	                                           		<td>ID</td>
 	                                           		<td>이름</td>
 	                                           </tr> 
 	                                           </table>
@@ -438,7 +452,7 @@ function fn_del(value, name){
               <!-- Modal content -->
 			<div class="modal-content">
 				<p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt; margin-bottom: 10px;">평가원 선택</span></b></span></p>
-				<table class="table table-hover">
+				<table class="table table-hover" id="userPopTable">
 					<thead>
 						<tr>
 							<th style="width: 60px; text-align: center;">선택</th>
@@ -446,6 +460,7 @@ function fn_del(value, name){
 							<th style="width: 60px; text-align: center;">아이디</th>
 						</tr>
 					</thead>
+					<tbody id="userPop">
 						<tr>
 							<td style="text-align: center;"><input type="checkbox" name="checkedUserId"/></td>
 							<td style="text-align: center;"id="user_name"><c:out value="선택안함" /></td>
@@ -458,6 +473,7 @@ function fn_del(value, name){
 							<td style="text-align: center;"id="user_id"><c:out value="${memberList.user_id}" /> </td>
 						</tr>
 					</c:forEach>
+					</tbody>
 				</table>
                 
 				<div>
